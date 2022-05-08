@@ -1,31 +1,19 @@
 <script lang="ts">
   import TopAppBar, { Row, Section, Title } from "@smui/top-app-bar";
   import Button, { Label } from "@smui/button";
-  import { ConnectDetails } from '../types/connect-details';
-  import axios from 'axios';
   import { sequence } from '0xsequence';
   import { onMount } from 'svelte';
   import auth from '../stores/auth';
-  import type { AuthToken } from '../types/auth-token';
-  import { api } from '../shared/api';
+  import { SequenceService } from '../services/sequence.service';
+  let wallet: sequence.Wallet;
 
-  let wallet: sequence.Wallet
-
-  $: onMount(async () => {
-    wallet = new sequence.Wallet('polygon')
+  $: onMount(() => {
+    wallet = new sequence.Wallet('rinkeby');
   })
 
   const connect = async () => {
-    const connectDetails: ConnectDetails = await wallet.connect({
-      app: 'Air Crhysalis',
-      authorize: true
-    })
-    const { data } : {data: AuthToken} = await axios.post(`${api.sequence}/GetAuthToken`, {
-      ewtString: connectDetails.proof.proofString,
-      testnetMode: false
-    })
+    const data = await SequenceService.authenticate(wallet);
     auth.set({address: data.address, connected: data.status, jwt: data.jwtToken})
-    axios.defaults.headers.common['Authorization'] = `Bearer ${data.jwtToken}`;
   }
 </script>
 
@@ -35,7 +23,7 @@
             <Title>Air Crhysalis</Title>
         </Section>
         {#if $auth.connected}
-            <Section align="end">Connected</Section>
+            <Section align="end">{$auth.address.slice(0,10)}...{$auth.address.slice(-3)}</Section>
         {:else}
             <Section align="end">
                 <Button on:click={connect} variant="outlined">

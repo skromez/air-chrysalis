@@ -1,5 +1,5 @@
 export interface ConnectDetails {
-  chainId: string;
+  chainId?: string;
   connected: boolean;
   proof: {
     proofString: string;

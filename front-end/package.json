@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "0xsequence": "^0.37.1",
+    "@0xsequence/ethauth": "^0.7.0",
     "@smui/button": "^6.0.0-beta.13",
     "@smui/card": "^6.0.0-beta.13",
     "@smui/data-table": "^6.0.0-beta.13",
@@ -36,6 +37,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-svelte3": "^3.2.1",
+    "ethers": "^5.6.5",
     "lodash": "^4.17.21",
     "postcss": "^8.4.5",
     "prettier": "^2.4.1",
