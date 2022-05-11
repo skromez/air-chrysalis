@@ -1,9 +1,8 @@
-import { writable } from "svelte/store";
+import { Writable, writable } from "svelte/store";
+import type { AuthStore } from '../types/auth-store';
 
-const auth = writable({
+export const auth: Writable<AuthStore> = writable({
   address: '',
   connected: false,
-  jwt: ''
+  jwt: '',
 });
-
-export default auth;

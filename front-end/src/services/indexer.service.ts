@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export class IndexerService {
-  // private static readonly axiosInstance = axios.create({baseURL: 'https://polygon-indexer.sequence.app/rpc/Indexer'})
-  private static readonly axiosInstance = axios.create({baseURL: 'https://rinkeby-indexer.sequence.app/rpc/Indexer'})
+  private static readonly axiosInstance = axios.create({baseURL: 'https://polygon-indexer.sequence.app/rpc/Indexer'})
+  // private static readonly axiosInstance = axios.create({baseURL: 'https://rinkeby-indexer.sequence.app/rpc/Indexer'})
 
   static async getTokenIDs(accountAddress: string): Promise<{tokenIds: string[], contractAddress: string}> {
     const {data: {balances: contractBalances}} = await this.axiosInstance.post('/GetTokenBalances', {

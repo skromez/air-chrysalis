@@ -3,17 +3,28 @@
   import Button, { Label } from "@smui/button";
   import { sequence } from '0xsequence';
   import { onMount } from 'svelte';
-  import auth from '../stores/auth';
+  import { auth } from '../stores/auth';
   import { SequenceService } from '../services/sequence.service';
+  import { ethers } from 'ethers';
+  import { contractAbi, contractAddress } from '../shared/contract';
   let wallet: sequence.Wallet;
 
   $: onMount(() => {
-    wallet = new sequence.Wallet('rinkeby');
+    wallet = new sequence.Wallet(137);
   })
 
   const connect = async () => {
     const data = await SequenceService.authenticate(wallet);
-    auth.set({address: data.address, connected: data.status, jwt: data.jwtToken})
+    const provider = wallet.getProvider()
+    auth.set({
+      address: data.address,
+      connected: data.status,
+      jwt: data.jwtToken,
+      wallet,
+      provider,
+      signer: wallet.getSigner(),
+      contract: new ethers.Contract(contractAddress, contractAbi, provider)
+    })
   }
 </script>
 
