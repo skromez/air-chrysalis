@@ -7,6 +7,8 @@
   import { SequenceService } from '../services/sequence.service';
   import { ethers } from 'ethers';
   import { contractAbi, contractAddress } from '../shared/contract';
+  import { loading } from '../stores/loading';
+  import { goto } from "$app/navigation";
   let wallet: sequence.Wallet;
 
   $: onMount(() => {
@@ -14,24 +16,29 @@
   })
 
   const connect = async () => {
-    const data = await SequenceService.authenticate(wallet);
-    const provider = wallet.getProvider()
-    auth.set({
-      address: data.address,
-      connected: data.status,
-      jwt: data.jwtToken,
-      wallet,
-      provider,
-      signer: wallet.getSigner(),
-      contract: new ethers.Contract(contractAddress, contractAbi, provider)
-    })
+    loading.set(true);
+    try {
+      const data = await SequenceService.authenticate(wallet);
+      const provider = wallet.getProvider()
+      auth.set({
+        address: data.address,
+        connected: data.status,
+        jwt: data.jwtToken,
+        wallet,
+        provider,
+        signer: wallet.getSigner(),
+        contract: new ethers.Contract(contractAddress, contractAbi, provider)
+      })
+    } catch (err) {
+      loading.set(false);
+    }
   }
 </script>
 
 <TopAppBar class="flex justify-around" variant="static" color={'secondary'}>
-    <Row class="">
-        <Section>
-            <Title>Air Crhysalis</Title>
+    <Row>
+        <Section class="hover:cursor-pointer" on:click={() => goto('/assets')}>
+            <Title>Air Chrysalis</Title>
         </Section>
         {#if $auth.connected}
             <Section align="end">{$auth.address.slice(0,10)}...{$auth.address.slice(-3)}</Section>

@@ -7,4 +7,5 @@ export interface Card {
   name: string;
   properties: {artist: string, baseCardId: number, cardType: string, element: string, health: number, power: number, mana: number, type: string}
   tokenId: string;
+  selected: boolean;
 }

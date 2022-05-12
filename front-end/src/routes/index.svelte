@@ -1,20 +1,19 @@
 <script lang="ts">
   import { get } from 'svelte/store';
   import { auth } from '../stores/auth';
-  import cards from '../stores/cards';
+  import { loading } from "../stores/loading";
+  import { cards } from '../stores/cards';
 
   import { MetadataService } from '../services/metadata.service';
   import { IndexerService } from '../services/indexer.service';
 
-  import Card from '../components/card.svelte'
   import Button from "@smui/button";
   import { Contract, ethers } from 'ethers';
   import { sequence } from '0xsequence';
   import { Web3Signer } from '0xsequence';
   import { sleep } from '../utils/sleep';
-  import { contractInterface, defaultProvider, skyWeaverAddress } from '../shared/contract';
-
-  const contractAddress = '0xBae24D4152C1F219e36102f362bD682c8DB816c8'
+  import { contractAddress, contractInterface, defaultProvider, skyWeaverAddress } from '../shared/contract';
+  import { goto } from "$app/navigation";
 
   const sendNFT = async (_from, _to, amount = 1, tokenId = 65637) => {
     while (wallet.isOpened()) {
@@ -133,16 +132,15 @@
 </svelte:head>
 {#if wallet}
     <div>
-        <Button variant="outlined" on:click={createGiveaway}>Create Giveaway</Button>
-        <Button variant="outlined" on:click={enterGiveaway}>Enter Giveaway</Button>
-        <Button variant="outlined" on:click={finishGiveaway}>Finish Giveaway</Button>
+        <Button variant="raised" on:click={() => goto('/assets')}>Go to assets</Button>
     </div>
-{/if}
-{#if $cards.length}
-    <div class="text-center pb-4">Available Cards:</div>
-    <div class="mx-auto p-4 grid border-sky-900 rounded grid-flow-row grid-cols-3 gap-4 border-2 w-3/4 max-w-[850px] max-h-[725px] overflow-y-auto">
-        {#each $cards as card}
-            <Card imageSrc={card.image} />
-        {/each}
-    </div>
+<!--    <div>-->
+<!--        <Button variant="outlined" on:click={createGiveaway}>Create Giveaway</Button>-->
+<!--        <Button variant="outlined" on:click={enterGiveaway}>Enter Giveaway</Button>-->
+<!--        <Button variant="outlined" on:click={finishGiveaway}>Finish Giveaway</Button>-->
+<!--    </div>-->
+{:else if $loading}
+    loading...
+{:else}
+    please connect your wallet...
 {/if}
