@@ -33,9 +33,6 @@
     }
 
     const txnResponse = await signer.sendTransaction(transaction)
-    console.log(txnResponse)
-
-    // wait for the transaction to be mined
     await txnResponse.wait()
   }
 

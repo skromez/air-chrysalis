@@ -26,6 +26,17 @@
     await txnResponse.wait();
   }
 
+  const enterGiveaway = async () => {
+    const data = contractInterface.encodeFunctionData('enterGiveaway', [address, giveawayId])
+    const transaction = {
+      from: await $auth.signer.getAddress(),
+      to: contractAddress,
+      data: data
+    }
+    const txnResponse = await $auth.signer.sendTransaction(transaction)
+    await txnResponse.wait();
+  }
+
   page.subscribe(({params}) => {
     address = params.address
     giveawayId = Number(params.giveawayId)
@@ -35,11 +46,8 @@
     giveaway = await fetchGiveawayDetails(address, giveawayId)
   })
 
-  defaultContract.on('giveawayCanceled', async (account, _giveawayId) => {
-    console.log('==== GIVEAWAY CANCELLED ====')
-    console.log(account, 'account');
-    console.log(giveawayId, 'giveawayId');
-    if (account.toLowerCase() == address.toLowerCase() && _giveawayId == giveawayId) {
+  defaultContract.on('giveawayEntered', async (_, __, _giveawayId) => {
+    if (_giveawayId == giveawayId) {
       giveaway = await fetchGiveawayDetails(address, giveawayId)
     }
   })
@@ -62,8 +70,10 @@
 {/if}
 <div class="mt-4">
 {#if !$auth.connected && giveaway}
-        If you are the host of the give away please connect your wallet
-{:else if address.toLowerCase() === $auth.address.toLowerCase() && giveaway}
+        If you are the host of the giveaway or want to participate please connect your wallet
+{:else if address.toLowerCase() === $auth.address.toLowerCase() && giveaway && !giveaway.finished}
     <Button class="button-shaped-round" on:click={finishGiveaway} variant="raised">Finish Giveaway</Button>
+{:else if giveaway}
+    <Button class="button-shaped-round" on:click={enterGiveaway} variant="raised">Enter Giveaway</Button>
 {/if}
 </div>
