@@ -1,7 +1,7 @@
 <script lang="ts">
   import TopAppBar, { Row, Section, Title } from "@smui/top-app-bar";
   import Button, { Label } from "@smui/button";
-  import { sequence } from '0xsequence';
+  import { sequence, Wallet } from '0xsequence';
   import { onMount } from 'svelte';
   import { auth } from '../stores/auth';
   import { SequenceService } from '../services/sequence.service';
@@ -9,7 +9,9 @@
   import { contractAbi, contractAddress } from '../shared/contract';
   import { loading } from '../stores/loading';
   import { goto } from "$app/navigation";
-  let wallet: sequence.Wallet;
+  import logo from '../images/logo.png'
+
+  let wallet: Wallet;
 
   $: onMount(() => {
     wallet = new sequence.Wallet(137);
@@ -39,7 +41,10 @@
 <TopAppBar class="flex justify-around" variant="static" color={'secondary'}>
     <Row>
         <Section class="hover:cursor-pointer" on:click={() => goto('/assets')}>
-            <Title class="text-2xl">Air Chrysalis</Title>
+            <Title class="text-2xl flex">
+                <img style="width: 32px; height: 32px;" class="mr-2" src={logo} alt="Air Chrysalis">
+                Air Chrysalis
+            </Title>
         </Section>
         {#if $auth.connected}
             <Section class="text-2xl" align="end">{$auth.address.slice(0,10)}...{$auth.address.slice(-3)}</Section>

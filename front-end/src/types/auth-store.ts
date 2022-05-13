@@ -1,13 +1,13 @@
-import type { sequence } from '0xsequence';
+import type { Wallet } from '0xsequence';
 import type { ethers } from 'ethers';
-import type { Web3Signer } from '0xsequence';
+import type { Signer } from 'ethers';
 
 export interface AuthStore {
   address: string;
   connected: boolean;
   jwt: string;
-  wallet?: sequence.Wallet;
+  wallet?: Wallet;
   provider?: ethers.providers.Web3Provider;
-  signer?: Web3Signer;
+  signer?: Signer;
   contract?: ethers.Contract;
 }

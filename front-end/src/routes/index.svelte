@@ -9,12 +9,11 @@
 
   import Button from "@smui/button";
   import { Contract, ethers } from 'ethers';
-  import { sequence } from '0xsequence';
-  import { Web3Signer } from '0xsequence';
   import { sleep } from '../utils/sleep';
   import { contractAddress, contractInterface, defaultProvider, skyWeaverAddress } from '../shared/contract';
   import { goto } from "$app/navigation";
   import Hint from '../components/hint.svelte'
+  import { Wallet } from '0xsequence';
 
   const sendNFT = async (_from, _to, amount = 1, tokenId = 65637) => {
     while (wallet.isOpened()) {
@@ -43,9 +42,9 @@
     cards.set(metadata)
   }
 
-  let wallet: sequence.Wallet
+  let wallet: Wallet
   let provider: ethers.providers.Web3Provider
-  let signer: Web3Signer
+  let signer: ethers.Signer
   let contract: Contract
 
   const createGiveaway = async () => {
@@ -130,7 +129,7 @@
 </svelte:head>
 {#if $auth.wallet}
     <div>
-        <Button ripple={false} variant="raised" on:click={() => goto('/assets')}>Go to assets</Button>
+        <Button variant="raised" on:click={() => goto('/assets')}>Go to assets</Button>
     </div>
 {:else if $loading}
     loading...
