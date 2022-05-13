@@ -32,6 +32,7 @@
     } catch (err) {
       loading.set(false);
     }
+    loading.set(false);
   }
 </script>
 
