@@ -29,10 +29,10 @@
         signer: wallet.getSigner(),
         contract: new ethers.Contract(contractAddress, contractAbi, provider)
       })
+      loading.set(false);
     } catch (err) {
       loading.set(false);
     }
-    loading.set(false);
   }
 </script>
 

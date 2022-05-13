@@ -92,33 +92,33 @@
       signer = wallet.getSigner();
       contract = value.contract
 
-      contract.on('giveawayFinished', async (account, id, winner, tokenIds, contractAddr) => {
-        console.log('==== GIVEAWAY FINISHED ====')
-        console.log(account, 'account');
-        console.log(id, 'id');
-        console.log(winner, 'winner');
-        console.log(tokenIds, 'tokenIds');
-        console.log(contractAddr, 'contract address');
-      })
+      // contract.on('giveawayFinished', async (account, id, winner, tokenIds, contractAddr) => {
+      //   console.log('==== GIVEAWAY FINISHED ====')
+      //   console.log(account, 'account');
+      //   console.log(id, 'id');
+      //   console.log(winner, 'winner');
+      //   console.log(tokenIds, 'tokenIds');
+      //   console.log(contractAddr, 'contract address');
+      // })
 
-      contract.on('giveawayEntered', async (account, participant, giveawayId) => {
-        console.log('==== GIVEAWAY ENTERED ====')
-        console.log(account, 'account');
-        console.log(participant, 'participant');
-        console.log(giveawayId, 'giveawayId');
-      })
+      // contract.on('giveawayEntered', async (account, participant, giveawayId) => {
+      //   console.log('==== GIVEAWAY ENTERED ====')
+      //   console.log(account, 'account');
+      //   console.log(participant, 'participant');
+      //   console.log(giveawayId, 'giveawayId');
+      // })
 
-      contract.on('giveawayCreated', async (account, giveawayId) => {
-        console.log('==== GIVEAWAY CREATED ====')
-        console.log(account, 'account');
-        console.log(giveawayId, 'giveawayId');
-      })
+      // contract.on('giveawayCreated', async (account, giveawayId) => {
+      //   console.log('==== GIVEAWAY CREATED ====')
+      //   console.log(account, 'account');
+      //   console.log(giveawayId, 'giveawayId');
+      // })
 
-      contract.on('giveawayCanceled', async (account, giveawayId) => {
-        console.log('==== GIVEAWAY CANCELLED ====')
-        console.log(account, 'account');
-        console.log(giveawayId, 'giveawayId');
-      })
+      // contract.on('giveawayCanceled', async (account, giveawayId) => {
+      //   console.log('==== GIVEAWAY CANCELLED ====')
+      //   console.log(account, 'account');
+      //   console.log(giveawayId, 'giveawayId');
+      // })
 
       authUnsub();
     }
@@ -127,7 +127,7 @@
 <svelte:head>
     <title>Air Crhysalis</title>
 </svelte:head>
-{#if wallet}
+{#if $auth.wallet}
     <div>
         <Button variant="raised" on:click={() => goto('/assets')}>Go to assets</Button>
     </div>
