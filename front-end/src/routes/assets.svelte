@@ -12,14 +12,17 @@
   import { contractAddress, contractInterface, defaultContract, skyWeaverAddress } from '../shared/contract';
   import { goto } from '$app/navigation';
 
+  let loading = false;
   const fetchCards = async () => {
     const {tokenIds, contractAddress} = await IndexerService.getTokenIDs($auth.address)
     const metadata = await MetadataService.getMetadata(tokenIds, contractAddress)
-    cards.set(metadata)
+    // cards.set(metadata)
+    loading = false;
   }
 
   const authUnsub = auth.subscribe(async (value) => {
     if (value.connected) {
+      loading = true;
       await fetchCards()
       authUnsub();
     }
@@ -62,7 +65,7 @@
 </script>
 {#if !$auth.connected}
     Pleaes connect wallet to get access to the inventory
-{:else if $cards.length}
+{:else if !loading}
     <div class="px-36">
         <div class="text-center pb-4">Available Cards</div>
         <div class="border-sky-900 rounded-2xl p-4 grid gap-y-4 grid-flow-row grid-cols-[repeat(auto-fill,_175px)] justify-center justify-items-center border-2 max-h-[525px] overflow-y-auto">
@@ -82,6 +85,6 @@
             <Button on:click={() => goto(`/${$auth.address}`)} class="button-shaped-round" variant="raised">My Giveaways</Button>
         </div>
     </div>
-{:else}
+{:else if loading}
     Fetching cards...
 {/if}
