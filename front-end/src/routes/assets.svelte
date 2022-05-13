@@ -69,7 +69,7 @@
     <Hint>Please connect wallet to get access to your cards</Hint>
 {:else if !loading}
     <div class="px-36">
-        <div class="text-center pb-4">Available Cards</div>
+        <div class="text-center text-2xl pb-4">Available Cards</div>
         <div class="border-des-purple rounded-2xl p-4 grid gap-y-4 grid-flow-row grid-cols-[repeat(auto-fill,_175px)] justify-center justify-items-center border-2 max-h-[525px] overflow-y-auto">
             {#each $cards as card}
                 <Card on:done={onSelect} card={card} />

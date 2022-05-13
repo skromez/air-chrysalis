@@ -11,6 +11,10 @@
   $error: #dc3545,
 );
 
+:root {
+  --button-radius: 15px
+}
+
 * {
   font-family: 'Barlow', Roboto, sans-serif !important;
 }
@@ -23,7 +27,13 @@ body {
 
 button.button-shaped-round {
   color: white !important;
-  border-radius: 15px !important;
+  border-radius: var(--button-radius) !important;
+}
+
+.mdc-button--outlined {
+  .mdc-button__ripple {
+    border-radius: var(--button-radius) !important;
+  }
 }
 
 a {

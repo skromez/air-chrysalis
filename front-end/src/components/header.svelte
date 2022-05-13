@@ -1,6 +1,6 @@
 <script lang="ts">
   import TopAppBar, { Row, Section, Title } from "@smui/top-app-bar";
-  import Button, { Label } from "@smui/button";
+  import Button from "@smui/button";
   import { sequence, Wallet } from '0xsequence';
   import { onMount } from 'svelte';
   import { auth } from '../stores/auth';
@@ -50,8 +50,8 @@
             <Section class="text-2xl" align="end">{$auth.address.slice(0,10)}...{$auth.address.slice(-3)}</Section>
         {:else}
             <Section align="end">
-                <Button ripple={false} on:click={connect} class="button-shaped-round" variant="outlined">
-                    <Label class="text-base">Connect Wallet</Label>
+                <Button ripple={false} on:click={connect} class="button-shaped-round normal-case" variant="outlined">
+                    Connect Wallet
                 </Button>
             </Section>
         {/if}
