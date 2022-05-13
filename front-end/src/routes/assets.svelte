@@ -16,7 +16,7 @@
   const fetchCards = async () => {
     const {tokenIds, contractAddress} = await IndexerService.getTokenIDs($auth.address)
     const metadata = await MetadataService.getMetadata(tokenIds, contractAddress)
-    // cards.set(metadata)
+    cards.set(metadata)
     loading = false;
   }
 
