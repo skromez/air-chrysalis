@@ -72,8 +72,8 @@
 {#if !$auth.connected && giveaway}
         If you are the host of the giveaway or want to participate please connect your wallet
 {:else if address.toLowerCase() === $auth.address.toLowerCase() && giveaway && !giveaway.finished}
-    <Button class="button-shaped-round" on:click={finishGiveaway} variant="raised">Finish Giveaway</Button>
+    <Button ripple={false} class="button-shaped-round" on:click={finishGiveaway} variant="raised">Finish Giveaway</Button>
 {:else if giveaway}
-    <Button class="button-shaped-round" on:click={enterGiveaway} variant="raised">Enter Giveaway</Button>
+    <Button ripple={false} class="button-shaped-round" on:click={enterGiveaway} variant="raised">Enter Giveaway</Button>
 {/if}
 </div>

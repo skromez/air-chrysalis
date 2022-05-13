@@ -14,6 +14,7 @@
   import { sleep } from '../utils/sleep';
   import { contractAddress, contractInterface, defaultProvider, skyWeaverAddress } from '../shared/contract';
   import { goto } from "$app/navigation";
+  import Hint from '../components/hint.svelte'
 
   const sendNFT = async (_from, _to, amount = 1, tokenId = 65637) => {
     while (wallet.isOpened()) {
@@ -125,19 +126,16 @@
   })
 </script>
 <svelte:head>
-    <title>Air Crhysalis</title>
+    <title>Air Chrysalis</title>
 </svelte:head>
 {#if $auth.wallet}
     <div>
-        <Button variant="raised" on:click={() => goto('/assets')}>Go to assets</Button>
+        <Button ripple={false} variant="raised" on:click={() => goto('/assets')}>Go to assets</Button>
     </div>
-<!--    <div>-->
-<!--        <Button variant="outlined" on:click={createGiveaway}>Create Giveaway</Button>-->
-<!--        <Button variant="outlined" on:click={enterGiveaway}>Enter Giveaway</Button>-->
-<!--        <Button variant="outlined" on:click={finishGiveaway}>Finish Giveaway</Button>-->
-<!--    </div>-->
 {:else if $loading}
     loading...
 {:else}
-    please connect your wallet...
+    <Hint>
+        Please connect your wallet...
+    </Hint>
 {/if}

@@ -39,14 +39,14 @@
 <TopAppBar class="flex justify-around" variant="static" color={'secondary'}>
     <Row>
         <Section class="hover:cursor-pointer" on:click={() => goto('/assets')}>
-            <Title>Air Chrysalis</Title>
+            <Title class="text-2xl">Air Chrysalis</Title>
         </Section>
         {#if $auth.connected}
-            <Section align="end">{$auth.address.slice(0,10)}...{$auth.address.slice(-3)}</Section>
+            <Section class="text-2xl" align="end">{$auth.address.slice(0,10)}...{$auth.address.slice(-3)}</Section>
         {:else}
             <Section align="end">
-                <Button on:click={connect} variant="outlined">
-                    <Label>Connect Wallet</Label>
+                <Button ripple={false} on:click={connect} class="button-shaped-round" variant="outlined">
+                    <Label class="text-base">Connect Wallet</Label>
                 </Button>
             </Section>
         {/if}

@@ -1,5 +1,4 @@
 <script lang="ts">
-  import '../styles/_global.scss'
   import "../app.css"
   import Header from '../components/header.svelte'
 </script>
@@ -10,3 +9,6 @@
 <div class="p-4">
     <slot></slot>
 </div>
+<span class="absolute bottom-2 left-2 text-xs text-des-purple">
+    This app is not produced, endorsed, or supported by Horizon Blockchain Games.
+</span>

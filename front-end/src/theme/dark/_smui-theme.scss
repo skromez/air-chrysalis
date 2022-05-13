@@ -4,21 +4,30 @@
 
 // Svelte Colors! (Dark Theme)
 @use '@material/theme/index' as theme with (
-  $primary: #007bff,
-  $secondary: #1e293b,
-  $surface: #0f2133,
-  $background: #001421,
+  $primary: #AC8FFF,
+  $secondary: #40306B,
+  $surface: #231445,
+  $background: #0C061E,
   $error: #dc3545,
 );
 
+* {
+  font-family: 'Barlow', Roboto, sans-serif !important;
+}
+
 html,
 body {
-  background-color: #001421;
+  background-color: #0C061E;
   color: theme.$on-surface;
 }
 
+button.button-shaped-round {
+  color: white !important;
+  border-radius: 15px !important;
+}
+
 a {
-  color: #40b3ff;
+  color: #40306B;
 }
 a:visited {
   color: color.scale(#40b3ff, $lightness: -35%);

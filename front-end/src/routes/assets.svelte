@@ -9,6 +9,8 @@
   import { IndexerService } from '../services/indexer.service';
   import { MetadataService } from '../services/metadata.service';
   import Card from '../components/card.svelte';
+  import Hint from '../components/hint.svelte';
+  import CircularProgress from '@smui/circular-progress';
   import { contractAddress, contractInterface, defaultContract, skyWeaverAddress } from '../shared/contract';
   import { goto } from '$app/navigation';
 
@@ -64,27 +66,37 @@
 
 </script>
 {#if !$auth.connected}
-    Pleaes connect wallet to get access to the inventory
+    <Hint>Please connect wallet to get access to your cards</Hint>
 {:else if !loading}
     <div class="px-36">
         <div class="text-center pb-4">Available Cards</div>
-        <div class="border-sky-900 rounded-2xl p-4 grid gap-y-4 grid-flow-row grid-cols-[repeat(auto-fill,_175px)] justify-center justify-items-center border-2 max-h-[525px] overflow-y-auto">
+        <div class="border-des-purple rounded-2xl p-4 grid gap-y-4 grid-flow-row grid-cols-[repeat(auto-fill,_175px)] justify-center justify-items-center border-2 max-h-[525px] overflow-y-auto">
             {#each $cards as card}
                 <Card on:done={onSelect} card={card} />
             {/each}
         </div>
-        <div class="mt-2">
+        <div class="mt-4 flex justify-between">
             <Wrapper>
                 <div class="inline-block hover:cursor-pointer">
-                    <Button on:click={createGiveaway} disabled={buttonDisabled} class="button-shaped-round" variant="raised">Create Giveaway</Button>
+                    <Button ripple={false} on:click={createGiveaway} disabled={buttonDisabled} class="button-shaped-round" variant="raised">
+                        <span class="text-white">
+                            Create Giveaway
+                        </span>
+                    </Button>
                 </div>
                 {#if buttonDisabled}
                     <Tooltip>Select assets to start giveaway</Tooltip>
                 {/if}
             </Wrapper>
-            <Button on:click={() => goto(`/${$auth.address}`)} class="button-shaped-round" variant="raised">My Giveaways</Button>
+            <Button ripple={false} on:click={() => goto(`/${$auth.address}`)} class="button-shaped-round" variant="raised">
+                <span class="text-white">
+                    My Giveaways
+                </span>
+            </Button>
         </div>
     </div>
 {:else if loading}
-    Fetching cards...
+    <Hint>
+        <CircularProgress style="height: 120px; width: 120px;" indeterminate />
+    </Hint>
 {/if}

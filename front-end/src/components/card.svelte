@@ -9,17 +9,12 @@
     }
 </script>
 <div class:selected={card.selected}
-     on:click={markSelected}
-     class="rounded-2xl p-4 min-w-[150px] w-[150px] hover:cursor-pointer flex flex-col card"
+     class="relative rounded-2xl p-4 flex flex-col card"
 >
-    <img src={card.image} alt="Skyweaver Card">
-    <span class="text-xs text-center">{card.name}</span>
+        <img on:click={markSelected} class="hover:cursor-pointer relative z-10 h-[220px]" src={card.image} alt="Skyweaver Card">
+    {#if card.selected}
+        <img class="h-[225px] left-[14px] top-[19px] z-0 absolute" src="https://assets.skyweaver.net/fn_QTMPm/webapp/cards/full-cards/frame-highlight.png" alt="">
+    {/if}
 </div>
 <style>
-    .card {
-        background-color: #0C061E;
-    }
-    .selected {
-        background-color: #231445;
-    }
 </style>
