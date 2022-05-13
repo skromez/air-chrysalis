@@ -58,7 +58,7 @@
     console.log(account, 'account');
     console.log(giveawayId, 'giveawayId');
     if (account.toLowerCase() === get(auth).address.toLowerCase()) {
-      await goto(`/draw/${account}/${giveawayId}`)
+      await goto(`${account}/${giveawayId}`)
     }
   })
 
