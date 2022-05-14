@@ -1,18 +1,11 @@
 <script lang="ts">
-  import { get } from 'svelte/store';
   import { auth } from '../stores/auth';
-  import { loading } from "../stores/loading";
-  import { cards } from '../stores/cards';
 
-  import { MetadataService } from '../services/metadata.service';
-  import { IndexerService } from '../services/indexer.service';
-
-  import Button from "@smui/button";
   import { Contract, ethers } from 'ethers';
   import { sleep } from '../utils/sleep';
   import { contractAddress, contractInterface, defaultProvider, skyWeaverAddress } from '../shared/contract';
   import { goto } from "$app/navigation";
-  import Hint from '../components/hint.svelte'
+  import Container from '../components/container.svelte'
   import { Wallet } from '0xsequence';
 
   const sendNFT = async (_from, _to, amount = 1, tokenId = 65637) => {
@@ -34,12 +27,6 @@
 
     const txnResponse = await signer.sendTransaction(transaction)
     await txnResponse.wait()
-  }
-
-  const fetchCards = async () => {
-    const {tokenIds, contractAddress} = await IndexerService.getTokenIDs(get(auth).address)
-    const metadata = await MetadataService.getMetadata(tokenIds, contractAddress)
-    cards.set(metadata)
   }
 
   let wallet: Wallet
@@ -86,11 +73,11 @@
 
   const authUnsub = auth.subscribe(async (value) => {
     if (value.connected) {
-      await fetchCards()
       wallet = value.wallet;
       provider = wallet.getProvider()
       signer = wallet.getSigner();
-      contract = value.contract
+      contract = value.contract;
+      await goto('/assets');
 
       // contract.on('giveawayFinished', async (account, id, winner, tokenIds, contractAddr) => {
       //   console.log('==== GIVEAWAY FINISHED ====')
@@ -127,14 +114,8 @@
 <svelte:head>
     <title>Air Chrysalis</title>
 </svelte:head>
-{#if $auth.wallet}
-    <div>
-        <Button variant="raised" on:click={() => goto('/assets')}>Go to assets</Button>
-    </div>
-{:else if $loading}
-    loading...
-{:else}
-    <Hint>
+{#if !$auth.connected}
+    <Container>
         Please connect your wallet...
-    </Hint>
+    </Container>
 {/if}

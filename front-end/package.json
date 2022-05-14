@@ -15,6 +15,7 @@
     "smui-theme-dark": "smui-theme compile static/smui-dark.css -i src/theme/dark"
   },
   "devDependencies": {
+    "0xsequence": "^0.37.1",
     "@0xsequence/ethauth": "^0.7.0",
     "@smui/button": "^6.0.0-beta.13",
     "@smui/card": "^6.0.0-beta.13",
@@ -31,7 +32,6 @@
     "@types/lodash": "^4.14.178",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
-    "0xsequence": "^0.37.1",
     "autoprefixer": "^10.4.2",
     "axios": "^0.27.2",
     "cssnano": "^5.0.16",
@@ -39,6 +39,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-svelte3": "^3.2.1",
     "ethers": "^5.6.5",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "postcss": "^8.4.5",
     "prettier": "^2.4.1",

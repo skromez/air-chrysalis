@@ -1,40 +1,28 @@
 <script lang="ts">
   import TopAppBar, { Row, Section, Title } from "@smui/top-app-bar";
   import Button from "@smui/button";
-  import { sequence, Wallet } from '0xsequence';
-  import { onMount } from 'svelte';
+  import { sequence } from '0xsequence';
   import { auth } from '../stores/auth';
   import { SequenceService } from '../services/sequence.service';
   import { ethers } from 'ethers';
   import { contractAbi, contractAddress } from '../shared/contract';
-  import { loading } from '../stores/loading';
   import { goto } from "$app/navigation";
   import logo from '../images/logo.png'
-
-  let wallet: Wallet;
-
-  $: onMount(() => {
-    wallet = new sequence.Wallet(137);
-  })
+  import { browser } from "$app/env";
 
   const connect = async () => {
-    loading.set(true);
-    try {
-      const data = await SequenceService.authenticate(wallet);
-      const provider = wallet.getProvider()
-      auth.set({
-        address: data.address,
-        connected: data.status,
-        jwt: data.jwtToken,
-        wallet,
-        provider,
-        signer: wallet.getSigner(),
-        contract: new ethers.Contract(contractAddress, contractAbi, provider)
-      })
-      loading.set(false);
-    } catch (err) {
-      loading.set(false);
-    }
+    const wallet = new sequence.Wallet(137)
+    const data = await SequenceService.authenticate(wallet);
+    const provider = wallet.getProvider()
+    auth.set({
+      address: data.address,
+      connected: data.status,
+      jwt: data.jwtToken,
+      wallet,
+      provider,
+      signer: wallet.getSigner(),
+      contract: new ethers.Contract(contractAddress, contractAbi, provider)
+    })
   }
 </script>
 
@@ -47,9 +35,13 @@
             </Title>
         </Section>
         {#if $auth.connected}
-            <Section class="text-2xl" align="end">{$auth.address.slice(0,10)}...{$auth.address.slice(-3)}</Section>
-        {:else}
-            <Section align="end">
+            <Section class="text-xl" align="end">
+                <span class="pr-[20px]">
+                    {$auth.address.slice(0,10)}...{$auth.address.slice(-3)}
+                </span>
+            </Section>
+        {:else if browser}
+            <Section align="end" class="mr-2">
                 <Button ripple={false} on:click={connect} class="button-shaped-round normal-case" variant="outlined">
                     Connect Wallet
                 </Button>

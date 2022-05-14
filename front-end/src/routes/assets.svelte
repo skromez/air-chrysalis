@@ -9,22 +9,35 @@
   import { IndexerService } from '../services/indexer.service';
   import { MetadataService } from '../services/metadata.service';
   import Card from '../components/card.svelte';
-  import Hint from '../components/hint.svelte';
+  import Container from '../components/container.svelte';
   import CircularProgress from '@smui/circular-progress';
   import { contractAddress, contractInterface, defaultContract, skyWeaverAddress } from '../shared/contract';
   import { goto } from '$app/navigation';
 
-  let loading = false;
+  let loading = true;
   const fetchCards = async () => {
-    const {tokenIds, contractAddress} = await IndexerService.getTokenIDs($auth.address)
-    const metadata = await MetadataService.getMetadata(tokenIds, contractAddress)
-    cards.set(metadata)
-    loading = false;
+    const tokenIds = await IndexerService.getTokenIDs($auth.address)
+    if (tokenIds.length > 50) {
+      let tokensLeft = tokenIds.length;
+      let offset = 0
+      let chunkSize = 50;
+      while (tokensLeft > 0) {
+        let slice = tokenIds.slice(offset, chunkSize);
+        const metadata = await MetadataService.getMetadata(slice)
+        cards.update((prev) => [...prev, ...metadata]);
+        tokensLeft -= 50
+        offset = chunkSize
+        chunkSize += 50;
+      }
+    } else {
+      const metadata = await MetadataService.getMetadata(tokenIds)
+      cards.set(metadata)
+    }
+    loading = (false);
   }
 
   const authUnsub = auth.subscribe(async (value) => {
     if (value.connected) {
-      loading = true;
       await fetchCards()
       authUnsub();
     }
@@ -66,7 +79,7 @@
 
 </script>
 {#if !$auth.connected}
-    <Hint>Please connect wallet to get access to your cards</Hint>
+    <Container>Please connect wallet to get access to your cards</Container>
 {:else if !loading}
     <div class="px-36">
         <div class="text-center text-2xl pb-4">Available Cards</div>
@@ -96,7 +109,7 @@
         </div>
     </div>
 {:else if loading}
-    <Hint>
+    <Container>
         <CircularProgress style="height: 120px; width: 120px;" indeterminate />
-    </Hint>
+    </Container>
 {/if}
