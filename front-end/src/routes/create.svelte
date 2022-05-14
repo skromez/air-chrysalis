@@ -34,7 +34,7 @@
     })
 </script>
 <div class="mx-auto max-w-[720px] flex flex-col items-center">
-    {#each $cards.filter((card) => card.selected) as card}
+    {#each $cards.filter((card) => card.selected) as card (card.tokenId)}
         <CreateCard on:removeCard={onRemoveCard} card={card}/>
     {/each}
     <Button class="button-shaped-round w-full py-6 normal-case text-base" variant="raised">Continue</Button>
