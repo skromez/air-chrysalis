@@ -16,6 +16,7 @@
   const fetchCards = async () => {
     const tokenIds = await IndexerService.getTokenIDs($auth.address)
     if (tokenIds.length > 50) {
+      cards.set([]);
       let tokensLeft = tokenIds.length;
       let offset = 0
       let chunkSize = 50;
