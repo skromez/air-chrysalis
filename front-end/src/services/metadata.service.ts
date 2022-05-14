@@ -7,14 +7,12 @@ export class MetadataService {
   private static readonly axiosInstance = axios.create({baseURL: 'https://metadata.sequence.app/rpc/Metadata'})
 
   static async getMetadata(tokenIDs: {tokenId: number, amount}[]): Promise<Card[]> {
-    console.log(tokenIDs)
     const {data: {tokenMetadata}} = await this.axiosInstance.post('/GetTokenMetadata', {
       chainID: '4',
       contractAddress: skyWeaverAddress,
       tokenIDs: tokenIDs.map((token) => token.tokenId)
     })
     const amountTokenMap = new Map(tokenIDs.map((token) => [token.tokenId, token.amount]))
-    console.log(tokenMetadata)
     return tokenMetadata.map((token) => ({
       ...token,
       amount: amountTokenMap.get(token.tokenId)
