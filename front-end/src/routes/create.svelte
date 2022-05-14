@@ -7,8 +7,6 @@
     import CreateCard from '../components/create-card.svelte'
     import Button from "@smui/button";
 
-    const selectedCards = $cards.filter((card) => card.selected)
-
     const createGiveaway = async () => {
       const signer: Signer = $auth.signer;
       const selectedCards = $cards.filter((card) => card.selected).map((card) => Number(card.tokenId))
@@ -23,6 +21,12 @@
       await txnResponse.wait()
     }
 
+    const onRemoveCard = (event) => {
+      const tokenId = event.detail;
+      cards.update((prev) => prev
+        .map((card) => card.tokenId === tokenId ? {...card, selected: false} : card))
+    }
+
     defaultContract.on('giveawayCreated', async (account, giveawayId) => {
       if (account.toLowerCase() === $auth.address.toLowerCase()) {
         await goto(`${account}/${giveawayId}`)
@@ -30,8 +34,8 @@
     })
 </script>
 <div class="mx-auto max-w-[720px] flex flex-col items-center">
-    {#each selectedCards as card (card.tokenId)}
-        <CreateCard card={card}/>
+    {#each $cards.filter((card) => card.selected) as card}
+        <CreateCard on:removeCard={onRemoveCard} card={card}/>
     {/each}
     <Button class="button-shaped-round w-full py-6 normal-case text-base" variant="raised">Continue</Button>
 </div>

@@ -2,9 +2,11 @@
   import Card, { Content } from "@smui/card";
   import Button from "@smui/button";
   import type { Card as SkyCard } from '../types/card'
+  import { createEventDispatcher } from 'svelte';
 
   export let card: SkyCard;
 
+  const dispatch = createEventDispatcher();
   let amount = 1;
 
   const increase = () => {
@@ -21,16 +23,25 @@
   const setMaxAmount = () => {
     amount = card.amount;
   }
+
+  const removeCard = () => {
+    dispatch('removeCard', card.tokenId);
+  }
 </script>
 <Card class="m-4 p-3 rounded-2xl w-full">
-    <Content class="flex items-center">
-        <div class="card-image-container">
-            <img class="card-image" src={card.image} alt="Card Image">
+    <Content class="flex justify-between relative">
+        <div class="flex justify-between">
+            <div class="card-image-container">
+                <img class="card-image" src={card.image} alt="Card Image">
+            </div>
+            <div class="flex flex-col ml-4">
+                <span class="text-base">{card.name}</span>
+                <span class="text-sm text-gray-400">Balance: {card.amount}</span>
+            </div>
         </div>
-        <div class="flex flex-col ml-4">
-            <span class="text-base">{card.name}</span>
-            <span class="text-sm text-gray-400">Balance: {card.amount}</span>
-        </div>
+        <button on:click={removeCard} class="cursor-pointer absolute right-[5px] top-[3px] p-2">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon icon-close"><rect width="15.0435" height="2.00581" transform="matrix(0.70506 -0.709147 0.70506 0.709147 0 10.668)" fill="currentcolor"></rect><rect width="15.0435" height="2.00581" transform="matrix(0.70506 0.709147 -0.70506 0.709147 1.41455 0)" fill="currentcolor"></rect></svg>
+        </button>
     </Content>
     <Content class="rounded-2xl border-des-purple border-solid border flex justify-between items-center">
         <div class="flex justify-center items-center">
