@@ -5,7 +5,8 @@ export interface Card {
   description: string;
   image: string;
   name: string;
-  properties: {artist: string, baseCardId: number, cardType: string, element: string, health: number, power: number, mana: number, type: string}
+  properties: {artist: string, baseCardId: number, cardType: string, element: string, health: number, power: number, mana: number, type: 'Silver' | 'Gold'}
   tokenId: string;
   selected: boolean;
+  amount: number;
 }

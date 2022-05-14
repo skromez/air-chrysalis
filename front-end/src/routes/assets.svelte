@@ -1,7 +1,6 @@
 <script lang="ts">
   import Tooltip, { Wrapper } from '@smui/tooltip';
   import Button from '@smui/button';
-  import { get } from 'svelte/store';
 
   import { auth } from '../stores/auth';
   import { cards } from '../stores/cards';
@@ -13,6 +12,7 @@
   import CircularProgress from '@smui/circular-progress';
   import { contractAddress, contractInterface, defaultContract, skyWeaverAddress } from '../shared/contract';
   import { goto } from '$app/navigation';
+  import { Signer } from 'ethers';
 
   let loading = true;
   const fetchCards = async () => {
@@ -33,6 +33,20 @@
       const metadata = await MetadataService.getMetadata(tokenIds)
       cards.set(metadata)
     }
+    const cardOwnerships = await MetadataService.getCardOwnership($auth.address);
+    cards.update((cards) => {
+      return cards.map((card) => {
+        const ownership = cardOwnerships[card.properties.baseCardId]
+        const isSilver = card.properties.type === 'Silver'
+        let amount;
+        if (isSilver) {
+          amount = Number(ownership['SW_SILVER_CARDS']['balance'])
+        } else {
+          amount = Number(ownership['SW_GOLD_CARDS']['balance'])
+        }
+        return { ...card, amount }
+      })
+    })
     loading = (false);
   }
 
@@ -55,7 +69,7 @@
   });
 
   const createGiveaway = async () => {
-    const signer = $auth.signer;
+    const signer: Signer = $auth.signer;
     const selectedCards = $cards.filter((card) => card.selected).map((card) => Number(card.tokenId))
     const data = contractInterface.encodeFunctionData(
       'createGiveaway', [skyWeaverAddress, selectedCards]
@@ -69,10 +83,7 @@
   }
 
   defaultContract.on('giveawayCreated', async (account, giveawayId) => {
-    console.log('==== GIVEAWAY CREATED ====')
-    console.log(account, 'account');
-    console.log(giveawayId, 'giveawayId');
-    if (account.toLowerCase() === get(auth).address.toLowerCase()) {
+    if (account.toLowerCase() === $auth.address.toLowerCase()) {
       await goto(`${account}/${giveawayId}`)
     }
   })

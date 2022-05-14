@@ -4,7 +4,8 @@ const config = {
         extend: {
             colors: {
                 'des-purple': '#40306B',
-                'dark-purple': '#231445'
+                'dark-purple': '#231445',
+                'bright-purple': '#AC8FFF'
             },
         },
     },
