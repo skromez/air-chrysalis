@@ -10,9 +10,7 @@
   import Card from '../components/card.svelte';
   import Container from '../components/container.svelte';
   import CircularProgress from '@smui/circular-progress';
-  import { contractAddress, contractInterface, defaultContract, skyWeaverAddress } from '../shared/contract';
   import { goto } from '$app/navigation';
-  import { Signer } from 'ethers';
 
   let loading = true;
   const fetchCards = async () => {
@@ -33,20 +31,6 @@
       const metadata = await MetadataService.getMetadata(tokenIds)
       cards.set(metadata)
     }
-    const cardOwnerships = await MetadataService.getCardOwnership($auth.address);
-    cards.update((cards) => {
-      return cards.map((card) => {
-        const ownership = cardOwnerships[card.properties.baseCardId]
-        const isSilver = card.properties.type === 'Silver'
-        let amount;
-        if (isSilver) {
-          amount = Number(ownership['SW_SILVER_CARDS']['balance'])
-        } else {
-          amount = Number(ownership['SW_GOLD_CARDS']['balance'])
-        }
-        return { ...card, amount }
-      })
-    })
     loading = (false);
   }
 
@@ -67,27 +51,6 @@
   cards.subscribe((value) => {
     buttonDisabled = value.filter((card) => card.selected).length === 0
   });
-
-  const createGiveaway = async () => {
-    const signer: Signer = $auth.signer;
-    const selectedCards = $cards.filter((card) => card.selected).map((card) => Number(card.tokenId))
-    const data = contractInterface.encodeFunctionData(
-      'createGiveaway', [skyWeaverAddress, selectedCards]
-    )
-    const transaction = {
-      to: contractAddress,
-      data
-    }
-    const txnResponse = await signer.sendTransaction(transaction)
-    await txnResponse.wait()
-  }
-
-  defaultContract.on('giveawayCreated', async (account, giveawayId) => {
-    if (account.toLowerCase() === $auth.address.toLowerCase()) {
-      await goto(`${account}/${giveawayId}`)
-    }
-  })
-
 </script>
 {#if !$auth.connected}
     <Container>Please connect wallet to get access to your cards</Container>
@@ -96,13 +59,13 @@
         <div class="text-center text-2xl pb-4">Available Cards</div>
         <div class="border-des-purple rounded-2xl p-4 grid gap-y-4 grid-flow-row grid-cols-[repeat(auto-fill,_175px)] justify-center justify-items-center border-2 max-h-[525px] overflow-y-auto">
             {#each $cards as card}
-                <Card on:done={onSelect} card={card} />
+                <Card on:selected={onSelect} card={card} />
             {/each}
         </div>
         <div class="mt-4 flex justify-between">
             <Wrapper>
                 <div class="inline-block hover:cursor-pointer">
-                    <Button ripple={false} on:click={createGiveaway} disabled={buttonDisabled} class="button-shaped-round" variant="raised">
+                    <Button ripple={false} on:click={() => goto('/create')} disabled={buttonDisabled} class="button-shaped-round" variant="raised">
                         <span class="text-white">
                             Create Giveaway
                         </span>

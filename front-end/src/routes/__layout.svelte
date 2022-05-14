@@ -38,6 +38,6 @@
         <slot></slot>
     {/if}
 </div>
-<span class="absolute bottom-2 left-2 text-xs text-des-purple">
+<span class="absolute left-2 text-xs text-des-purple pb-2">
     This app is not produced, endorsed, or supported by Horizon Blockchain Games.
 </span>

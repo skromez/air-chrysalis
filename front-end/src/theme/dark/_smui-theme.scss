@@ -35,6 +35,11 @@ button.button-shaped-round {
     border-radius: var(--button-radius) !important;
   }
 }
+.mdc-button--raised {
+  .mdc-button__ripple {
+    border-radius: var(--button-radius) !important;
+  }
+}
 
 a {
   color: #40306B;
