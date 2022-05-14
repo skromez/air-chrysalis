@@ -15,7 +15,7 @@
   --button-radius: 15px
 }
 
-* {
+* :not(.material-icons) {
   font-family: 'Barlow', Roboto, sans-serif !important;
 }
 

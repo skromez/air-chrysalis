@@ -9,6 +9,7 @@
   import { goto } from "$app/navigation";
   import logo from '../images/logo.png'
   import { browser } from "$app/env";
+  import IconButton from '@smui/icon-button';
 
   const connect = async () => {
     const wallet = new sequence.Wallet(137)
@@ -24,6 +25,16 @@
       contract: new ethers.Contract(contractAddress, contractAbi, provider)
     })
   }
+
+  const logout = () => {
+    auth.set({
+      address: '',
+      connected: false,
+      jwt: '',
+    })
+    localStorage.removeItem('jwt')
+    localStorage.removeItem('expiresAt')
+  }
 </script>
 
 <TopAppBar class="flex justify-around" variant="static" color={'secondary'}>
@@ -35,10 +46,11 @@
             </Title>
         </Section>
         {#if $auth.connected}
-            <Section class="text-xl" align="end">
-                <span class="pr-[20px]">
+            <Section class="text-xl pr-[20px]" align="end">
+                <span class="mr-2">
                     {$auth.address.slice(0,10)}...{$auth.address.slice(-3)}
                 </span>
+                <IconButton on:click={logout} ripple={false} class="material-icons">logout</IconButton>
             </Section>
         {:else if browser}
             <Section align="end" class="mr-2">

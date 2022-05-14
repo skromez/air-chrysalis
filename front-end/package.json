@@ -15,12 +15,12 @@
     "smui-theme-dark": "smui-theme compile static/smui-dark.css -i src/theme/dark"
   },
   "devDependencies": {
-    "0xsequence": "^0.37.1",
     "@0xsequence/ethauth": "^0.7.0",
     "@smui/button": "^6.0.0-beta.13",
     "@smui/card": "^6.0.0-beta.13",
     "@smui/circular-progress": "^6.0.0-beta.16",
     "@smui/data-table": "^6.0.0-beta.13",
+    "@smui/icon-button": "^6.0.0-beta.16",
     "@smui/linear-progress": "^6.0.0-beta.13",
     "@smui/paper": "^6.0.0-beta.13",
     "@smui/textfield": "^6.0.0-beta.13",
@@ -32,6 +32,7 @@
     "@types/lodash": "^4.14.178",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
+    "0xsequence": "^0.37.1",
     "autoprefixer": "^10.4.2",
     "axios": "^0.27.2",
     "cssnano": "^5.0.16",
