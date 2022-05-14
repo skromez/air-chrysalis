@@ -33,11 +33,11 @@
     <title>Air Chrysalis</title>
 </svelte:head>
 <Header />
-<div class="p-4">
+<div class="px-4 pb-12 pt-2 relative">
     {#if browser}
         <slot></slot>
     {/if}
+    <span class="absolute bottom-2 left-2 text-xs text-des-purple">
+        This app is not produced, endorsed, or supported by Horizon Blockchain Games.
+    </span>
 </div>
-<span class="absolute left-2 text-xs text-des-purple pb-2">
-    This app is not produced, endorsed, or supported by Horizon Blockchain Games.
-</span>
