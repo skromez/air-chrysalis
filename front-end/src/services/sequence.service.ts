@@ -22,10 +22,6 @@ export class SequenceService {
     localStorage.setItem('expiresAt', String(jwt.exp))
     this.axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${data.jwtToken}`;
     axios.defaults.headers.common['Authorization'] = `Bearer ${data.jwtToken}`;
-    const res = await this.axiosInstance.post('https://api.skyweaver.net/rpc/SkyWeaverAPI/GetCardOwnership', {
-      contractQuery: false
-    })
-    console.log(res)
     return data
   }
 }
