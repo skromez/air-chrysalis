@@ -1,6 +1,6 @@
 import type { Wallet } from '0xsequence';
+import type { Web3Signer } from '0xsequence/dist/declarations/src/provider';
 import type { ethers } from 'ethers';
-import type { Signer } from 'ethers';
 
 export interface AuthStore {
   address: string;
@@ -8,6 +8,6 @@ export interface AuthStore {
   jwt: string;
   wallet?: Wallet;
   provider?: ethers.providers.Web3Provider;
-  signer?: Signer;
+  signer?: Web3Signer;
   contract?: ethers.Contract;
 }

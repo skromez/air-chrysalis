@@ -4,6 +4,8 @@
   import { page } from '$app/stores';
   import type { Giveaway } from '../types/giveaway';
   import GiveawayCard from '../components/giveaway-card.svelte'
+  import Container from '../components/container.svelte'
+  import CircularProgress from "@smui/circular-progress";
 
   let address: string;
 
@@ -20,14 +22,17 @@
     giveaways = await Promise.all(giveawayIds.map(async (id) => {
       return await fetchGiveawayDetails(address, id)
     }))
-    console.log(giveaways)
     loading = false;
   })
 </script>
 {#if loading}
-    Loading...
+    <Container>
+        <CircularProgress style="height: 120px; width: 120px;" indeterminate />
+    </Container>
 {:else if giveaways.length === 0}
-    No giveaways...
+    <Container>
+        No giveaways yet!
+    </Container>
 {:else if giveaways.length}
     <div class="grid grid-flow-row grid-cols-3">
         {#each giveaways as giveaway}

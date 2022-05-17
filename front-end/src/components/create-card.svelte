@@ -7,21 +7,20 @@
   export let card: SkyCard;
 
   const dispatch = createEventDispatcher();
-  let amount = 1;
 
   const increase = () => {
-    if (amount < card.amount) {
-      amount++
+    if (card.selectedAmount < card.amount) {
+      card.selectedAmount++
     }
   }
   const decrease = () => {
-    if (amount > 1) {
-      amount--
+    if (card.selectedAmount > 1) {
+      card.selectedAmount--
     }
   }
 
   const setMaxAmount = () => {
-    amount = card.amount;
+    card.selectedAmount = card.amount;
   }
 
   const removeCard = () => {
@@ -45,14 +44,14 @@
     </Content>
     <Content class="rounded-2xl border-des-purple border-solid border flex justify-between items-center">
         <div class="flex justify-center items-center">
-            <Button disabled={amount === 1} on:click={decrease} ripple={false} variant="raised" class="button-shaped-round min-w-[12px] w-[24px] h-[25px]">-</Button>
+            <Button disabled={card.selectedAmount === 1} on:click={decrease} ripple={false} variant="raised" class="button-shaped-round min-w-[12px] w-[24px] h-[25px]">-</Button>
             <div class="mx-4 text-2xl flex items-center gap-1">
-                <span>{amount}</span>
+                <span>{card.selectedAmount}</span>
                 <span class="text-xl text-gray-500"> / {card.amount}</span>
             </div>
-            <Button disabled={amount === card.amount} on:click={increase} ripple={false} variant="raised" class="button-shaped-round min-w-[12px] w-[24px] h-[25px]">+</Button>
+            <Button disabled={card.selectedAmount === card.amount} on:click={increase} ripple={false} variant="raised" class="button-shaped-round min-w-[12px] w-[24px] h-[25px]">+</Button>
         </div>
-        <Button disabled={amount === card.amount} on:click={setMaxAmount} ripple={false} variant="raised" class="text-xs button-shaped-round min-w-[42px] w-[42px] h-[25px] normal-case">Max</Button>
+        <Button disabled={card.selectedAmount === card.amount} on:click={setMaxAmount} ripple={false} variant="raised" class="text-xs button-shaped-round min-w-[42px] w-[42px] h-[25px] normal-case">Max</Button>
     </Content>
 </Card>
 <style>

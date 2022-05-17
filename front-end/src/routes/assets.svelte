@@ -12,7 +12,7 @@
   import CircularProgress from '@smui/circular-progress';
   import { goto } from '$app/navigation';
 
-  let loading = true;
+  let loading = !$cards.length;
   const fetchCards = async () => {
     const tokenIds = await IndexerService.getTokenIDs($auth.address)
     if (tokenIds.length > 50) {
@@ -21,24 +21,37 @@
       let offset = 0
       let chunkSize = 50;
       while (tokensLeft > 0) {
-        let slice = tokenIds.slice(offset, chunkSize);
+        let slice = tokenIds.map((token) => token.tokenId).slice(offset, chunkSize);
         const metadata = await MetadataService.getMetadata(slice)
-        cards.update((prev) => [...prev, ...metadata]);
+        const amountTokenMap = new Map(tokenIds.map((token) => [token.tokenId, token.amount]))
+        const fetchedCards = metadata.map((token) => ({
+          ...token,
+          amount: amountTokenMap.get(token.tokenId),
+          selectedAmount: 1,
+        }))
+        cards.update((prev) => [...prev, ...fetchedCards]);
         tokensLeft -= 50
         offset = chunkSize
         chunkSize += 50;
       }
     } else {
-      const metadata = await MetadataService.getMetadata(tokenIds)
-      cards.set(metadata)
+      const metadata = await MetadataService.getMetadata(tokenIds.map((token) => token.tokenId))
+      const amountTokenMap = new Map(tokenIds.map((token) => [token.tokenId, token.amount]))
+      const fetchedCards = metadata.map((token) => ({
+        ...token,
+        amount: amountTokenMap.get(token.tokenId),
+        selectedAmount: 1,
+      }))
+      cards.set(fetchedCards)
     }
     loading = (false);
   }
 
-  const authUnsub = auth.subscribe(async (value) => {
+  auth.subscribe(async (value) => {
     if (value.connected) {
-      await fetchCards()
-      authUnsub();
+      if ($cards.length === 0) {
+        await fetchCards()
+      }
     }
   })
 

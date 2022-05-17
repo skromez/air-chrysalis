@@ -9,4 +9,5 @@ export interface Card {
   tokenId: string;
   selected: boolean;
   amount: number;
+  selectedAmount: number;
 }
