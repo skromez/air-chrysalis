@@ -40,7 +40,7 @@
     {/if}
 </div>
 <span class="absolute bottom-2 left-2 text-xs text-des-purple">
-    This app is not produced, endorsed, or supported by Horizon Blockchain Games.
+    This app is not produced or supported by Horizon Blockchain Games.
 </span>
 <span class="absolute bottom-2 right-2 text-xs text-des-purple">
     Made by <a target="_blank" href="https://twitter.com/fuliggineth">Fuliggine</a> and <a target="_blank" href="https://github.com/skromez">skr</a>
