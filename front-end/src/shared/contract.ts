@@ -15,8 +15,8 @@ export const contractAbi = [
   'event giveawayFinished(address indexed account, uint256 giveawayId, address indexed winner, uint256[] tokenIds, address contractAddr)',
   'event giveawayCreated(address indexed account, uint256 giveawayId)',
   'event giveawayEntered(address indexed account, address indexed participant, uint256 giveawayId)',
-  'event giveawayCanceled(address indexed account, uint256 giveawayId)',
-  'event giveawayWinnerVerified(uint256 indexed requestId, address indexed winnerAddress, uint256 indexed giveawayId);'
+  'event giveawayWinnerVerified(uint256 indexed requestId, address indexed winnerAddress, uint256 indexed giveawayId)',
+  'event randomizingGiveawayWinner(uint256 indexed requestId, address indexed account, uint256 indexed giveawayId)'
 ];
 
 export const defaultProvider = new ethers.providers.AlchemyProvider(

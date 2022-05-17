@@ -66,6 +66,9 @@
     </div>
 {:else}
 <Container>
+    <div class="block mb-4">
+        Creating Giveaway...
+    </div>
     <CircularProgress style="height: 120px; width: 120px;" indeterminate />
 </Container>
 {/if}

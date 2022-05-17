@@ -159,6 +159,12 @@
     }
   })
 
+  defaultContract.on('randomizingGiveawayWinner', async (_, __, _giveawayId: number) => {
+    if (_giveawayId == giveawayId) {
+      loadingVRFVerification = true;
+    }
+  })
+
   const isItemIsCard = (item: SkyweaverCard) => {
     return item.properties.type === 'Gold' || item.properties.type === 'Silver'
   }
