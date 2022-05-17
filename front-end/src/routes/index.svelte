@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation";
   import Container from '../components/container.svelte'
   import { Wallet } from '0xsequence';
+  import { contractAddress } from "../shared/contract.ts";
 
   let wallet: Wallet
   let provider: ethers.providers.Web3Provider
@@ -27,7 +28,10 @@
     <Container>
         Please connect your wallet...
     </Container>
+    <div class="mt-8 text-2xl text-center mx-36">
+        Air Chrysalis is an open-source, unofficial giveaway tool for Skyweaver cards.
+        <br>
+        <br>
+        The whole giveaway process can be seen <a target="_blank" href={`https://polygonscan.com/address/${contractAddress}`}>on-chain</a> and the randomization is verified by <a href="https://docs.chain.link/docs/chainlink-vrf/"> Chainlink VRF</a>.
+    </div>
 {/if}
-<span class="absolute bottom-2 left-2 text-xs text-des-purple">
-    This app is not produced, endorsed, or supported by Horizon Blockchain Games.
-</span>

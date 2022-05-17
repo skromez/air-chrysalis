@@ -25,6 +25,10 @@ body {
   color: theme.$on-surface;
 }
 
+#svelte {
+  position: relative;
+}
+
 button.button-shaped-round {
   color: white !important;
   border-radius: var(--button-radius) !important;
@@ -42,8 +46,9 @@ button.button-shaped-round {
 }
 
 a {
-  color: #40306B;
+  color: #ac8fff !important;
 }
+
 a:visited {
-  color: color.scale(#40b3ff, $lightness: -35%);
+  color: #ac8fff !important;
 }

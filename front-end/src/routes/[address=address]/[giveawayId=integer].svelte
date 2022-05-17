@@ -24,6 +24,7 @@
   let loadingVRFVerification = false;
   let giveawayId: number;
   let giveaway: Giveaway
+  let isParticipating = false;
 
   const finishGiveaway = async () => {
     const data = contractInterface.encodeFunctionData('finishGiveaway', [address, giveawayId])
@@ -63,8 +64,7 @@
       }
 
       const txnResponse = await $auth.signer.sendTransactionBatch([...transactions, transaction])
-      const result = await txnResponse.wait()
-      console.log(result)
+      await txnResponse.wait()
       giveaway = await fetchGiveawayDetails(address, giveawayId)
     } catch (err) {
       console.log(err)
@@ -120,7 +120,13 @@
     loadingCards = false;
   }
 
+  const isParticipatingInGiveaway = (account: string, giveawayId: number): Promise<boolean> => {
+  }
+
   $: onMount(async () => {
+    if (address.toLowerCase() !== $auth.address.toLowerCase()) {
+      isParticipating = await isParticipatingInGiveaway($auth.address, giveawayId)
+    }
     giveaway = await fetchGiveawayDetails(address, giveawayId)
     await fetchCards()
   })
@@ -177,15 +183,13 @@
                             No Participants
                         {:else}
                             Participants
-                            <ul class="max-h-[150px] overflow-y-auto mt-4">
+                            <div class="max-h-[150px] overflow-y-auto mt-4">
                                 {#each giveaway.participants as participant}
-                                    <li>
-                                        <a href={`https://polygonscan.com/address/${participant}`}>
-                                            {participant.slice(0,10)}...{participant.slice(-5)}
-                                        </a>
-                                    </li>
+                                    <a target="_blank" href={`https://polygonscan.com/address/${participant}`}>
+                                        {participant.slice(0,10)}...{participant.slice(-5)}
+                                    </a>
                                 {/each}
-                            </ul>
+                            </div>
                         {/if}
                     </div>
                 </Content>
@@ -219,20 +223,28 @@
             <Container>
                 {#if giveaway && giveaway.finished}
                     <div class="mb-3">
-                        Winner: <a href={`https://polygonscan.com/address/${giveaway.winner}`}>{giveaway.winner}</a>
+                        Winner: <a target="_blank" href={`https://polygonscan.com/address/${giveaway.winner}`}>{giveaway.winner}</a>
                     </div>
                 {/if}
                 {#if !$auth.connected && giveaway}
-                <span>
-                    If you are the host of the giveaway or want to participate please connect your wallet
-                </span>
-                {:else if address.toLowerCase() === $auth.address.toLowerCase() && giveaway && !giveaway.finished}
+                    <span>
+                        If you are the host of the giveaway or want to participate please connect your wallet
+                    </span>
+                {/if}
+                {#if $auth.connected && giveaway && address.toLowerCase() === $auth.address.toLowerCase() && !giveaway.finished}
                     <Button ripple={false} class="button-shaped-round w-full py-6" on:click={finishGiveaway} variant="raised">Finish Giveaway</Button>
-                {:else if giveaway && !giveaway.finished}
+                {/if}
+                {#if $auth.connected && giveaway && !giveaway.finished  && address.toLowerCase() !== $auth.address.toLowerCase() && !isParticipating}
                     <Button ripple={false} class="button-shaped-round w-full py-6" on:click={enterGiveaway} variant="raised">Enter Giveaway</Button>
                 {/if}
-                {#if giveaway && giveaway.finished && address.toLowerCase() === $auth.address.toLowerCase() && !giveaway.prizeSent}
+                {#if isParticipating}
+                    You are participating in this giveaway.
+                {/if}
+                {#if $auth.connected && giveaway && giveaway.finished && address.toLowerCase() === $auth.address.toLowerCase() && !giveaway.prizeSent}
                     <Button ripple={false} class="button-shaped-round w-full py-6 mt-3" on:click={sendNFT} variant="raised">Send Prize</Button>
+                {/if}
+                {#if giveaway && giveaway.prizeSent}
+                    Prize has been sent to the winner!
                 {/if}
             </Container>
         </div>

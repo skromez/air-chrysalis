@@ -5,6 +5,7 @@
   import { onMount } from 'svelte';
   import { sequence } from '0xsequence';
   import { auth } from '../stores/auth';
+  import heart from '../images/heart.png'
 
   $: onMount(async () => {
     const jwt = localStorage.getItem('jwt')
@@ -38,3 +39,13 @@
         <slot></slot>
     {/if}
 </div>
+<span class="absolute bottom-2 left-2 text-xs text-des-purple">
+    This app is not produced, endorsed, or supported by Horizon Blockchain Games.
+</span>
+<span class="absolute bottom-2 right-2 text-xs text-des-purple">
+    Made by <a target="_blank" href="https://twitter.com/fuliggineth">Fuliggine</a> and <a target="_blank" href="https://github.com/skromez">skr</a>
+    with
+    <a target="_blank" href="https://metaguild.com/">
+        <img style="width: 20px; height: 20px; display: inline" src={heart} alt="heart emoji">
+    </a>
+</span>

@@ -7,10 +7,10 @@ export const contractAbi = [
   'function createGiveaway(address _contractAddr, uint256[2][] memory _tokensTuple)',
   'function enterGiveaway(address account, uint256 _giveawayId)',
   'function finishGiveaway(address account, uint256 _giveawayId)',
-  'function resetGiveaways()',
   'function getAccountGiveaway(address account, uint256 _giveawayId) public view returns((address contractAddr, uint256[2][] tokenTuples, address[] participants, bool finished, address winner, bool prizeSent) giveaway)',
   'function getAccountGiveaways(address account) public view returns(uint256[] giveaways)',
   'function prizeSent(address account, uint256 _giveawayId)',
+  'function isParticipatingInGiveaway(address account, uint256 _giveawayId) public view returns(bool)',
 
   'event giveawayFinished(address indexed account, uint256 giveawayId, address indexed winner, uint256[] tokenIds, address contractAddr)',
   'event giveawayCreated(address indexed account, uint256 giveawayId)',
