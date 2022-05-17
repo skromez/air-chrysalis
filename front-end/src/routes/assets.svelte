@@ -11,6 +11,7 @@
   import Container from '../components/container.svelte';
   import CircularProgress from '@smui/circular-progress';
   import { goto } from '$app/navigation';
+  import { onDestroy } from 'svelte';
 
   let loading = !$cards.length;
   const fetchCards = async () => {
@@ -47,7 +48,7 @@
     loading = (false);
   }
 
-  auth.subscribe(async (value) => {
+  const authSubDestroy = auth.subscribe(async (value) => {
     if (value.connected) {
       if ($cards.length === 0) {
         await fetchCards()
@@ -62,8 +63,13 @@
   }
 
   let buttonDisabled = true;
-  cards.subscribe((value) => {
+  const cardSubDestroy = cards.subscribe((value) => {
     buttonDisabled = value.filter((card) => card.selected).length === 0
+  })
+
+  onDestroy(() => {
+    cardSubDestroy();
+    authSubDestroy();
   })
 </script>
 {#if !$auth.connected}

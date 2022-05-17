@@ -10,7 +10,7 @@ export const contractAbi = [
   'function getAccountGiveaway(address account, uint256 _giveawayId) public view returns((address contractAddr, uint256[2][] tokenTuples, address[] participants, bool finished, address winner, bool prizeSent) giveaway)',
   'function getAccountGiveaways(address account) public view returns(uint256[] giveaways)',
   'function prizeSent(address account, uint256 _giveawayId)',
-  'function isParticipatingInGiveaway(address account, uint256 _giveawayId) public view returns(bool)',
+  'function isParticipatingInGiveaway(address account, uint256 giveawayId) public view returns(bool result)',
 
   'event giveawayFinished(address indexed account, uint256 giveawayId, address indexed winner, uint256[] tokenIds, address contractAddr)',
   'event giveawayCreated(address indexed account, uint256 giveawayId)',
@@ -55,4 +55,15 @@ export const fetchAccountGiveawayIds = async (address: string): Promise<number[]
   const txnResponse = await defaultProvider.call(transaction)
   const decoded = contractInterface.decodeFunctionResult('getAccountGiveaways', txnResponse)
   return decoded.giveaways.map((id: BigNumber) => id.toNumber())
+}
+
+export const isParticipatingInGiveaway = async (address: string, giveawayId): Promise<boolean> => {
+  const data = contractInterface.encodeFunctionData('isParticipatingInGiveaway', [address, giveawayId])
+  const transaction = {
+    to: contractAddress,
+    data: data
+  }
+  const txnResponse = await defaultProvider.call(transaction)
+  const [result] = contractInterface.decodeFunctionResult('isParticipatingInGiveaway', txnResponse)
+  return result
 }

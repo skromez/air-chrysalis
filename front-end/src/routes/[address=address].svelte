@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { fetchAccountGiveawayIds, fetchGiveawayDetails } from '../shared/contract';
   import { page } from '$app/stores';
   import type { Giveaway } from '../types/giveaway';
@@ -9,7 +9,7 @@
 
   let address: string;
 
-  page.subscribe(({params}) => {
+  const pageSubDestroy = page.subscribe(({params}) => {
     address = params.address
   })
 
@@ -23,6 +23,10 @@
       return await fetchGiveawayDetails(address, id)
     }))
     loading = false;
+  })
+
+  onDestroy(() => {
+    pageSubDestroy();
   })
 </script>
 {#if loading}

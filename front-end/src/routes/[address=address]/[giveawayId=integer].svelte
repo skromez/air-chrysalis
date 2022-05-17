@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import {
     contractAddress,
     contractInterface,
     defaultContract,
-    fetchGiveawayDetails,
+    fetchGiveawayDetails, isParticipatingInGiveaway,
     skyWeaverAddress
   } from '../../shared/contract';
   import type { Giveaway } from '../../types/giveaway';
@@ -25,6 +25,7 @@
   let giveawayId: number;
   let giveaway: Giveaway
   let isParticipating = false;
+  let isWinner = false;
 
   const finishGiveaway = async () => {
     const data = contractInterface.encodeFunctionData('finishGiveaway', [address, giveawayId])
@@ -42,6 +43,7 @@
     const erc1155Interface = new ethers.utils.Interface([
       'function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data)'
     ])
+
     const transactions = giveaway.tokenTuples.map((tokenTuple) => {
       const [tokenId, tokenAmount] = tokenTuple;
       const data = erc1155Interface.encodeFunctionData(
@@ -54,6 +56,7 @@
     })
 
     try {
+
       const data = contractInterface.encodeFunctionData(
         'prizeSent', [address, giveawayId]
       )
@@ -82,7 +85,7 @@
     await txnResponse.wait();
   }
 
-  page.subscribe(({params}) => {
+  const pageSubDestroy = page.subscribe(({params}) => {
     address = params.address
     giveawayId = Number(params.giveawayId)
   })
@@ -120,20 +123,31 @@
     loadingCards = false;
   }
 
-  const isParticipatingInGiveaway = (account: string, giveawayId: number): Promise<boolean> => {
-  }
+  const authSubDestroy = auth.subscribe(async (value) => {
+    if (value.connected) {
+      if (address.toLowerCase() !== $auth.address.toLowerCase()) {
+        isParticipating = await isParticipatingInGiveaway($auth.address, giveawayId)
+      }
+    }
+  })
 
   $: onMount(async () => {
-    if (address.toLowerCase() !== $auth.address.toLowerCase()) {
-      isParticipating = await isParticipatingInGiveaway($auth.address, giveawayId)
-    }
     giveaway = await fetchGiveawayDetails(address, giveawayId)
+    isWinner = $auth.connected && $auth.address.toLowerCase() == giveaway.winner.toLowerCase()
     await fetchCards()
+  })
+
+  onDestroy(() => {
+    pageSubDestroy();
+    authSubDestroy();
   })
 
   defaultContract.on('giveawayEntered', async (_, __, _giveawayId) => {
     if (_giveawayId == giveawayId) {
       giveaway = await fetchGiveawayDetails(address, giveawayId)
+      if ($auth.connected && $auth.address.toLowerCase() !== address.toLowerCase()) {
+        isParticipating = await isParticipatingInGiveaway($auth.address, giveawayId)
+      }
     }
   })
 
@@ -141,6 +155,7 @@
     if (_giveawayId == giveawayId) {
       giveaway = await fetchGiveawayDetails(address, giveawayId)
       loadingVRFVerification = false;
+      isWinner = $auth.connected && giveaway.winner.toLowerCase() === $auth.address.toLowerCase()
     }
   })
 
@@ -164,9 +179,13 @@
             <CircularProgress style="height: 150px; width: 160px;" indeterminate />
         </div>
     {:else}
-        {#if giveaway && giveaway.finished}
+        {#if giveaway && giveaway.finished && !isWinner}
             <Container>
                 Giveaway Finished.
+            </Container>
+        {:else if giveaway && giveaway.finished && isWinner}
+            <Container>
+                YOU WON THE GIVEAWAY!!! 🎉🎉🎉
             </Container>
         {/if}
         {#if giveaway}
@@ -232,12 +251,15 @@
                     </span>
                 {/if}
                 {#if $auth.connected && giveaway && address.toLowerCase() === $auth.address.toLowerCase() && !giveaway.finished}
-                    <Button ripple={false} class="button-shaped-round w-full py-6" on:click={finishGiveaway} variant="raised">Finish Giveaway</Button>
+                    {#if giveaway.participants.length === 0}
+                        <Button ripple={false} class="button-shaped-round w-full py-6 mb-4" on:click={() => navigator.clipboard.writeText(window.location.href)} variant="raised">Copy Giveaway Link</Button>
+                    {/if}
+                    <Button disabled={giveaway.participants.length === 0} ripple={false} class="button-shaped-round w-full py-6" on:click={finishGiveaway} variant="raised">Finish Giveaway</Button>
                 {/if}
                 {#if $auth.connected && giveaway && !giveaway.finished  && address.toLowerCase() !== $auth.address.toLowerCase() && !isParticipating}
                     <Button ripple={false} class="button-shaped-round w-full py-6" on:click={enterGiveaway} variant="raised">Enter Giveaway</Button>
                 {/if}
-                {#if isParticipating}
+                {#if $auth.connected && isParticipating && giveaway && !giveaway.finished}
                     You are participating in this giveaway.
                 {/if}
                 {#if $auth.connected && giveaway && giveaway.finished && address.toLowerCase() === $auth.address.toLowerCase() && !giveaway.prizeSent}
