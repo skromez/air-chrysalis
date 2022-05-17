@@ -7,13 +7,18 @@ export class MetadataService {
   private static readonly axiosInstance = axios.create({baseURL: 'https://metadata.sequence.app/rpc/Metadata'})
 
   static async getMetadata(tokenIDs: string[]): Promise<Card[]> {
-    const {data: {tokenMetadata}} = await this.axiosInstance.post('/GetTokenMetadata', {
-      chainID: '4',
-      contractAddress: skyWeaverAddress,
-      tokenIDs
-    })
-    return tokenMetadata
+    if (tokenIDs.length) {
+      const {data: {tokenMetadata}} = await this.axiosInstance.post('/GetTokenMetadata', {
+        chainID: '4',
+        contractAddress: skyWeaverAddress,
+        tokenIDs
+      })
+      return tokenMetadata
+    } else {
+      return [];
+    }
   }
+
 
   static async getCardOwnership(accountAddress: string): Promise<CardOwnership[]> {
     const result = await axios.post('https://api.skyweaver.net/rpc/SkyWeaverAPI/GetCardOwnership', {

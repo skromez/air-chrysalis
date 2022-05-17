@@ -25,8 +25,7 @@
       loading = true
       try {
         const txnResponse = await signer.sendTransaction(transaction)
-        const result = await txnResponse.wait()
-        console.log(result);
+        await txnResponse.wait()
       } catch (err) {
         loading = false
       }

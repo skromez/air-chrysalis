@@ -64,10 +64,12 @@
   let buttonDisabled = true;
   cards.subscribe((value) => {
     buttonDisabled = value.filter((card) => card.selected).length === 0
-  });
+  })
 </script>
 {#if !$auth.connected}
     <Container>Please connect wallet to get access to your cards</Container>
+{:else if $cards.length === 0 && !loading}
+    <Container>You don't have any Skyweaver Cards</Container>
 {:else if !loading}
     <div class="px-36">
         <div class="text-center text-2xl pb-4">Available Cards</div>
