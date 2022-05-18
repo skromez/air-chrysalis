@@ -36,7 +36,9 @@
     }
     const txnResponse = await $auth.signer.sendTransaction(transaction)
     await txnResponse.wait();
-    loadingVRFVerification = true;
+    if (giveaway.participants.length > 0) {
+      loadingVRFVerification = true;
+    }
   }
 
   const sendNFT = async () => {
@@ -142,7 +144,7 @@
     authSubDestroy();
   })
 
-  defaultContract.on('giveawayEntered', async (_, __, _giveawayId) => {
+  defaultContract.on('GiveawayEntered', async (_, __, _giveawayId) => {
     if (_giveawayId == giveawayId) {
       giveaway = await fetchGiveawayDetails(address, giveawayId)
       if ($auth.connected && $auth.address.toLowerCase() !== address.toLowerCase()) {
@@ -151,7 +153,13 @@
     }
   })
 
-  defaultContract.on('giveawayWinnerVerified', async (_, __, _giveawayId: number) => {
+  defaultContract.on('GiveawayCanceled', async (_, _giveawayId) => {
+    if (_giveawayId == giveawayId) {
+      giveaway = await fetchGiveawayDetails(address, giveawayId)
+    }
+  })
+
+  defaultContract.on('GiveawayWinnerVerified', async (_, _giveawayId: number) => {
     if (_giveawayId == giveawayId) {
       giveaway = await fetchGiveawayDetails(address, giveawayId)
       loadingVRFVerification = false;
@@ -159,7 +167,7 @@
     }
   })
 
-  defaultContract.on('randomizingGiveawayWinner', async (_, __, _giveawayId: number) => {
+  defaultContract.on('RandomizingGiveawayWinner', async (_, __, _giveawayId: number) => {
     if (_giveawayId == giveawayId) {
       loadingVRFVerification = true;
     }
@@ -187,7 +195,7 @@
     {:else}
         {#if giveaway && giveaway.finished && !isWinner}
             <Container>
-                Giveaway Finished.
+                Giveaway {giveaway.winner !== ethers.constants.AddressZero ? 'Finished' : 'Canceled'}.
             </Container>
         {:else if giveaway && giveaway.finished && isWinner}
             <Container>
@@ -246,7 +254,7 @@
         {/if}
         <div>
             <Container>
-                {#if giveaway && giveaway.finished}
+                {#if giveaway && giveaway.finished && giveaway.winner !== ethers.constants.AddressZero}
                     <div class="mb-3">
                         Winner: <a target="_blank" href={`https://polygonscan.com/address/${giveaway.winner}`}>{giveaway.winner}</a>
                     </div>
@@ -260,7 +268,7 @@
                     {#if giveaway.participants.length === 0}
                         <Button ripple={false} class="button-shaped-round w-full py-6 mb-4" on:click={() => navigator.clipboard.writeText(window.location.href)} variant="raised">Copy Giveaway Link</Button>
                     {/if}
-                    <Button disabled={giveaway.participants.length === 0} ripple={false} class="button-shaped-round w-full py-6" on:click={finishGiveaway} variant="raised">Finish Giveaway</Button>
+                    <Button ripple={false} class="button-shaped-round w-full py-6" on:click={finishGiveaway} variant="raised">Finish Giveaway</Button>
                 {/if}
                 {#if $auth.connected && giveaway && !giveaway.finished  && address.toLowerCase() !== $auth.address.toLowerCase() && !isParticipating}
                     <Button ripple={false} class="button-shaped-round w-full py-6" on:click={enterGiveaway} variant="raised">Enter Giveaway</Button>
@@ -268,7 +276,7 @@
                 {#if $auth.connected && isParticipating && giveaway && !giveaway.finished}
                     You are participating in this giveaway.
                 {/if}
-                {#if $auth.connected && giveaway && giveaway.finished && address.toLowerCase() === $auth.address.toLowerCase() && !giveaway.prizeSent}
+                {#if $auth.connected && giveaway && giveaway.finished && address.toLowerCase() === $auth.address.toLowerCase() && !giveaway.prizeSent && giveaway.winner !== ethers.constants.AddressZero}
                     <Button ripple={false} class="button-shaped-round w-full py-6 mt-3" on:click={sendNFT} variant="raised">Send Prize</Button>
                 {/if}
                 {#if giveaway && giveaway.prizeSent}

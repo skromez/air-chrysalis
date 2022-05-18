@@ -47,7 +47,7 @@
       }
     }
 
-    defaultContract.on('giveawayCreated', async (account, giveawayId) => {
+    defaultContract.on('GiveawayCreated', async (account, giveawayId) => {
       if (account.toLowerCase() === $auth.address.toLowerCase()) {
         cards.update((cards) => cards.map((card) => ({...card, selected: false, selectedAmount: 1})))
         await goto(`${account}/${giveawayId}`)

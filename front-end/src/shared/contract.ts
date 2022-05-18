@@ -1,7 +1,7 @@
 import { BigNumber, ethers } from 'ethers';
 import type { Giveaway } from '../types/giveaway';
 
-export const contractAddress = '0xC3b2eBCB928154960432EF0f57972fdc408924BD';
+export const contractAddress = '0xC120Fa1211B791fD37d7da14748e98Df09c829CB';
 export const skyWeaverAddress = '0x631998e91476da5b870d741192fc5cbc55f5a52e';
 export const contractAbi = [
   'function createGiveaway(address _contractAddr, uint256[2][] memory _tokensTuple)',
@@ -12,11 +12,11 @@ export const contractAbi = [
   'function prizeSent(address account, uint256 _giveawayId)',
   'function isParticipatingInGiveaway(address account, uint256 giveawayId) public view returns(bool result)',
 
-  'event giveawayFinished(address indexed account, uint256 giveawayId, address indexed winner, uint256[] tokenIds, address contractAddr)',
-  'event giveawayCreated(address indexed account, uint256 giveawayId)',
-  'event giveawayEntered(address indexed account, address indexed participant, uint256 giveawayId)',
-  'event giveawayWinnerVerified(uint256 indexed requestId, address indexed winnerAddress, uint256 indexed giveawayId)',
-  'event randomizingGiveawayWinner(uint256 indexed requestId, address indexed account, uint256 indexed giveawayId)'
+  'event GiveawayCreated(address indexed account, uint256 giveawayId)',
+  'event GiveawayEntered(address indexed account, address indexed participant, uint256 giveawayId);',
+  'event GiveawayCanceled(address indexed account, uint256 giveawayId)',
+  'event RandomizingGiveawayWinner(uint256 indexed requestId, address indexed account, uint256 indexed giveawayId)',
+  'event GiveawayWinnerVerified(address indexed winnerAddress, uint256 indexed giveawayId)',
 ];
 
 export const defaultProvider = new ethers.providers.AlchemyProvider(
