@@ -215,11 +215,11 @@
                         {#if giveaway.participants.length === 0}
                             No Participants
                         {:else}
-                            Participants
-                            <div class="max-h-[150px] overflow-y-auto mt-4">
+                            Participants: {giveaway.participants.length}
+                            <div class="max-h-[150px] overflow-y-auto mt-4 flex flex-col">
                                 {#each giveaway.participants as participant}
                                     <a target="_blank" href={`https://polygonscan.com/address/${participant}`}>
-                                        {participant.slice(0,10)}...{participant.slice(-5)}
+                                        {participant.slice(0,15)}...{participant.slice(-5)}
                                     </a>
                                 {/each}
                             </div>
