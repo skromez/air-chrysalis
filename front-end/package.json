@@ -2,7 +2,7 @@
   "name": "aircrhysalis",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev --https",
+    "dev": "vite dev",
     "build": "vite build",
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
@@ -28,7 +28,7 @@
     "@smui/tooltip": "^6.0.0-beta.13",
     "@smui/top-app-bar": "^6.0.0-beta.13",
     "@sveltejs/adapter-auto": "next",
-    "@sveltejs/adapter-netlify": "^1.0.0-next.44",
+    "@sveltejs/adapter-netlify": "^1.0.0-next.69",
     "@sveltejs/kit": "next",
     "@types/lodash": "^4.14.178",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
