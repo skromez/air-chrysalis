@@ -33,6 +33,7 @@
     "@types/lodash": "^4.14.178",
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
+    "0xsequence": "^0.37.1",
     "autoprefixer": "^10.4.2",
     "axios": "^0.27.2",
     "cssnano": "^5.0.16",
