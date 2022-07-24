@@ -24,17 +24,14 @@ contract AirChrysalis is VRFConsumerBaseV2 {
         address[] participants;
         bool finished;
         address winner;
-        bool prizeSent;
+        address owner;
+        uint256 requestId;
     }
-    struct RequestGiveaway {
-        address accountAddress;
-        uint256 giveawayId;
-    }
-    uint256 internal giveawayId = 1;
+    Giveaway[] giveawaysArray;
+
     mapping (address => uint256[]) addressGiveaways;
-    mapping (address => mapping (uint256 => Giveaway)) giveawaysMap;
     mapping (uint256 => mapping(address => bool)) giveawayParticipants;
-    mapping (uint256 => RequestGiveaway) requestToGiveaway;
+    mapping (uint256 => uint256) requestToGiveaway;
 
     event GiveawayCreated(address indexed account, uint256 giveawayId);
     event GiveawayEntered(address indexed account, address indexed participant, uint256 giveawayId);
@@ -54,44 +51,39 @@ contract AirChrysalis is VRFConsumerBaseV2 {
     }
 
     function createGiveaway(address _contractAddr, uint256[2][] memory _tokensTuple) public {
-        for (uint256 idx = 0; idx < _tokensTuple.length; idx++) {
-            ERC1155 token = ERC1155(_contractAddr);
-            require(token.balanceOf(msg.sender, _tokensTuple[idx][0]) > 0, "caller must own given token");
-            require(token.balanceOf(msg.sender, _tokensTuple[idx][0]) >= _tokensTuple[idx][1], "caller must have specified amount of token");
-        }
-        addressGiveaways[msg.sender].push(giveawayId);
         address[] memory participants;
-        giveawaysMap[msg.sender][giveawayId] = Giveaway(_contractAddr, _tokensTuple, participants, false, address(0), false);
-        emit GiveawayCreated(msg.sender, giveawayId);
-        giveawayId++;
+        giveawaysArray.push(Giveaway(_contractAddr, _tokensTuple, participants, false, address(0), msg.sender, 0));
+        addressGiveaways[msg.sender].push(giveawaysArray.length);
+        emit GiveawayCreated(msg.sender, giveawaysArray.length);
     }
 
     function getAccountGiveaways(address account) public view returns(uint256[] memory) {
         return addressGiveaways[account];
     }
 
-    function getAccountGiveaway(address account, uint256 _giveawayId) public view returns(Giveaway memory) {
-        return giveawaysMap[account][_giveawayId];
+    function getGiveaway(uint256 giveawayId) public view returns(Giveaway memory) {
+        return giveawaysArray[giveawayId];
     }
 
     function isParticipatingInGiveaway(address account, uint256 _giveawayId) public view returns(bool) {
         return giveawayParticipants[_giveawayId][account];
     }
 
-    function enterGiveaway(address account, uint256 _giveawayId) public {
-        require(account != msg.sender, "owner of giveaway can't participate");
-        require(giveawaysMap[account][_giveawayId].finished == false, "giveaway ended");
-        require(giveawaysMap[account][_giveawayId].contractAddr != address(0), "giveaway with specified id doesn't exist");
-        require(giveawayParticipants[_giveawayId][msg.sender] == false, "can't enroll twice to the same giveaway");
-        giveawayParticipants[_giveawayId][msg.sender] = true;
-        giveawaysMap[account][_giveawayId].participants.push(msg.sender);
-        emit GiveawayEntered(account, msg.sender, _giveawayId);
+    function enterGiveaway(uint256 giveawayId) public {
+        require(giveawayId + 1 <= giveawaysArray.length, "giveaway with specified index doesn't exist");
+        Giveaway memory giveaway = giveawaysArray[giveawayId];
+        require(giveaway.owner != msg.sender, "owner of giveaway can't participate");
+        require(giveaway.finished == false, "giveaway ended");
+        require(giveawayParticipants[giveawayId][msg.sender] == false, "can't enroll twice to the same giveaway");
+        giveawayParticipants[giveawayId][msg.sender] = true;
+        giveawaysArray[giveawayId].participants.push(msg.sender);
+        emit GiveawayEntered(giveaway.owner, msg.sender, giveawayId);
     }
 
-    function finishGiveaway(address account, uint256 _giveawayId) public {
-        require(msg.sender == account, "only host of giveaway can finish it");
-        Giveaway storage _giveaway = giveawaysMap[account][_giveawayId];
-        if (_giveaway.participants.length > 0) {
+    function finishGiveaway(uint256 giveawayId) public {
+        Giveaway storage giveaway = giveawaysArray[giveawayId];
+        require(msg.sender == giveaway.owner, "only host of giveaway can finish it");
+        if (giveaway.participants.length > 0) {
             s_requestId = COORDINATOR.requestRandomWords(
                 s_keyHash,
                 s_subscriptionId,
@@ -99,29 +91,22 @@ contract AirChrysalis is VRFConsumerBaseV2 {
                 s_callbackGasLimit,
                 s_numWords
             );
-            requestToGiveaway[s_requestId] = RequestGiveaway(account, _giveawayId);
-            emit RandomizingGiveawayWinner(s_requestId, account, _giveawayId);
+            requestToGiveaway[s_requestId] = giveawayId;
+            giveaway.requestId = s_requestId;
+            emit RandomizingGiveawayWinner(s_requestId, giveaway.owner, giveawayId);
         } else {
-            _giveaway.winner = address(0);
-            _giveaway.finished = true;
-            emit GiveawayCanceled(account, _giveawayId);
+            giveaway.winner = address(0);
+            giveaway.finished = true;
+            emit GiveawayCanceled(giveaway.owner, giveawayId);
         }
     }
 
-    function prizeSent(address account, uint256 _giveawayId) public {
-        Giveaway storage _giveaway = giveawaysMap[account][_giveawayId];
-        require(_giveaway.finished == true, "giveaway is not finished");
-        require(msg.sender == account, "only host of giveaway can call prizeSent");
-        require(_giveaway.winner != address(0), "winner should not be address zero");
-        _giveaway.prizeSent = true;
-    }
-
     function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
-        RequestGiveaway memory giveawayInfo = requestToGiveaway[requestId];
-        Giveaway storage _giveaway = giveawaysMap[giveawayInfo.accountAddress][giveawayInfo.giveawayId];
-        uint256 winnerIndex = (randomWords[0] % _giveaway.participants.length);
-        _giveaway.winner = _giveaway.participants[winnerIndex];
-        _giveaway.finished = true;
-        emit GiveawayWinnerVerified(_giveaway.winner, giveawayInfo.giveawayId);
+        uint256 giveawayId = requestToGiveaway[requestId];
+        Giveaway storage giveaway = giveawaysArray[giveawayId];
+        uint256 winnerIndex = (randomWords[0] % giveaway.participants.length);
+        giveaway.winner = giveaway.participants[winnerIndex];
+        giveaway.finished = true;
+        emit GiveawayWinnerVerified(giveaway.winner, giveawayId);
     }
 }
