@@ -27,7 +27,7 @@ contract AirChrysalis is VRFConsumerBaseV2 {
         address owner;
         uint256 requestId;
     }
-    Giveaway[] giveawaysArray;
+    Giveaway[] giveaways;
 
     mapping (address => uint256[]) addressGiveaways;
     mapping (uint256 => mapping(address => bool)) giveawayParticipants;
@@ -52,9 +52,9 @@ contract AirChrysalis is VRFConsumerBaseV2 {
 
     function createGiveaway(address _contractAddr, uint256[2][] memory _tokensTuple) public {
         address[] memory participants;
-        giveawaysArray.push(Giveaway(_contractAddr, _tokensTuple, participants, false, address(0), msg.sender, 0));
-        addressGiveaways[msg.sender].push(giveawaysArray.length);
-        emit GiveawayCreated(msg.sender, giveawaysArray.length);
+        giveaways.push(Giveaway(_contractAddr, _tokensTuple, participants, false, address(0), msg.sender, 0));
+        addressGiveaways[msg.sender].push(giveaways.length);
+        emit GiveawayCreated(msg.sender, giveaways.length);
     }
 
     function getAccountGiveaways(address account) public view returns(uint256[] memory) {
@@ -62,7 +62,7 @@ contract AirChrysalis is VRFConsumerBaseV2 {
     }
 
     function getGiveaway(uint256 giveawayId) public view returns(Giveaway memory) {
-        return giveawaysArray[giveawayId];
+        return giveaways[giveawayId];
     }
 
     function isParticipatingInGiveaway(address account, uint256 _giveawayId) public view returns(bool) {
@@ -70,18 +70,18 @@ contract AirChrysalis is VRFConsumerBaseV2 {
     }
 
     function enterGiveaway(uint256 giveawayId) public {
-        require(giveawayId + 1 <= giveawaysArray.length, "giveaway with specified index doesn't exist");
-        Giveaway memory giveaway = giveawaysArray[giveawayId];
+        require(giveawayId + 1 <= giveaways.length, "giveaway with specified index doesn't exist");
+        Giveaway memory giveaway = giveaways[giveawayId];
         require(giveaway.owner != msg.sender, "owner of giveaway can't participate");
         require(giveaway.finished == false, "giveaway ended");
         require(giveawayParticipants[giveawayId][msg.sender] == false, "can't enroll twice to the same giveaway");
         giveawayParticipants[giveawayId][msg.sender] = true;
-        giveawaysArray[giveawayId].participants.push(msg.sender);
+        giveaways[giveawayId].participants.push(msg.sender);
         emit GiveawayEntered(giveaway.owner, msg.sender, giveawayId);
     }
 
     function finishGiveaway(uint256 giveawayId) public {
-        Giveaway storage giveaway = giveawaysArray[giveawayId];
+        Giveaway storage giveaway = giveaways[giveawayId];
         require(msg.sender == giveaway.owner, "only host of giveaway can finish it");
         if (giveaway.participants.length > 0) {
             s_requestId = COORDINATOR.requestRandomWords(
@@ -103,7 +103,7 @@ contract AirChrysalis is VRFConsumerBaseV2 {
 
     function fulfillRandomWords(uint256 requestId, uint256[] memory randomWords) internal override {
         uint256 giveawayId = requestToGiveaway[requestId];
-        Giveaway storage giveaway = giveawaysArray[giveawayId];
+        Giveaway storage giveaway = giveaways[giveawayId];
         uint256 winnerIndex = (randomWords[0] % giveaway.participants.length);
         giveaway.winner = giveaway.participants[winnerIndex];
         giveaway.finished = true;
