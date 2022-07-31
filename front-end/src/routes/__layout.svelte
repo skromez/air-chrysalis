@@ -43,7 +43,7 @@
     This app is not produced or supported by Horizon Blockchain Games.
 </span>
 <span class="absolute bottom-2 right-2 text-xs text-des-purple">
-    Made by <a target="_blank" href="https://twitter.com/fuliggineth">Fuliggine</a> and <a target="_blank" href="https://github.com/skromez">skr</a>
+    Made by <a target="_blank" href="https://twitter.com/fuliggined">Fuliggine</a> and <a target="_blank" href="https://github.com/skromez">skr</a>
     with
     <a target="_blank" href="https://metaguild.com/">
         <img style="width: 20px; height: 20px; display: inline" src={heart} alt="heart emoji">

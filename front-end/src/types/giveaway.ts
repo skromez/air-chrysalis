@@ -1,11 +1,14 @@
 import type { BigNumber } from 'ethers';
 
 export interface Giveaway {
-  giveawayId?: number;
+  id: number;
   contractAddr: string
   finished: boolean
   participants: string[]
   tokenTuples: Array<[BigNumber, BigNumber]>;
-  winner: string;
+  requestId: BigNumber;
+  randomNumber: BigNumber;
+  winnersAmount: number;
+  owner: string;
   prizeSent: boolean;
 }
