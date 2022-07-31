@@ -1,3 +1,6 @@
 .idea
 hardhat/.idea
+hardhat/node_modules
 front-end/.idea
+front-end/node_modules
+node_modules/
