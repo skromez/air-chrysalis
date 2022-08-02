@@ -16,12 +16,12 @@
   }
 
 </script>
-<div class="text-left p-4">
-  <span class="block mb-2">
+<div class="text-left p-4 flex justify-between gap-4">
+  <span class="block mb-2 flex flex-col justify-between">
     Winner {idx + 1}
-    <a target="_blank" href={`https://polygonscan.com/address/${winner.address}`}>{winner.address.slice(0,15)}...{winner.address.slice(-4)}</a>
+    <a target="_blank" href={`https://polygonscan.com/address/${winner.address}`}>{winner.address.slice(0,18)}...{winner.address.slice(-4)}</a>
   </span>
-  <div class="flex gap-2 flex-wrap max-h-[90px] overflow-y-auto">
+  <div class="flex gap-2 flex-wrap max-h-[90px] overflow-y-auto justify-center">
     {#each winner.items as card}
       <div class:cursor-pointer={isItemIsCard(card)} on:click={() => itemClick(card)} class="text-center cursor-pointer w-[60px]">
         <img style="height: 80px;" src={card.image} alt="Card">

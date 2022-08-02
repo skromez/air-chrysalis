@@ -31,7 +31,6 @@
   let noGiveaway = false;
 
   const finishGiveaway = async () => {
-    console.log(address)
     const data = contractInterface.encodeFunctionData('finishGiveaway', [address, giveawayId])
     const transaction = {
       from: await $auth.signer.getAddress(),
@@ -54,7 +53,6 @@
     for (const winner of winners) {
       const tokenIds = []
       const tokenAmounts = []
-      console.log(winner.items)
       for (const token of winner.items as SkyweaverCard[]) {
         tokenIds.push(BigNumber.from(token.tokenId))
         tokenAmounts.push(BigNumber.from(token.amount * 100))
@@ -128,7 +126,7 @@
       cards = metadata.map((card) => {
         return {
           ...card,
-          amount: tokensAmountMap.get(card.tokenId) / 100
+          amount: tokensAmountMap.get(card.tokenId)
         }
       })
     }

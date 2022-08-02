@@ -78,8 +78,8 @@
     <Container>You don't have any Skyweaver Cards</Container>
 {:else if !loading}
     <div class="px-36">
-        <div class="text-center text-2xl pb-4">Available Cards</div>
-        <div class="border-des-purple rounded-2xl p-4 grid gap-y-4 grid-flow-row grid-cols-[repeat(auto-fill,_175px)] justify-center justify-items-center border-2 max-h-[525px] overflow-y-auto">
+        <div class="text-center text-2xl pb-4 mt-2">Available Cards</div>
+        <div class="border-des-purple rounded-2xl p-4 pb-8 grid gap-y-4 grid-flow-row grid-cols-[repeat(auto-fill,_175px)] justify-center justify-items-center border-2 max-h-[525px] overflow-y-auto">
             {#each $cards as card}
                 <Card on:selected={onSelect} card={card} />
             {/each}

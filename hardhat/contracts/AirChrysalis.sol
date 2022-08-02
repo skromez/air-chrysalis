@@ -11,10 +11,9 @@ contract AirChrysalis is VRFConsumerBaseV2 {
     VRFCoordinatorV2Interface COORDINATOR;
     uint64 immutable s_subscriptionId;
     bytes32 immutable s_keyHash;
-    uint32 immutable s_callbackGasLimit = 40000;
+    uint32 immutable s_callbackGasLimit = 50000;
     uint16 immutable s_requestConfirmations = 3;
 
-    uint256[] public s_randomWords;
     uint256 public s_requestId;
 
     struct Giveaway {
@@ -59,7 +58,7 @@ contract AirChrysalis is VRFConsumerBaseV2 {
         if (winnersAmount > 1) {
             uint256 itemsAmount = 0;
             for (uint256 i = 0; i < _tokensTuple.length; i++) {
-                itemsAmount += _tokensTuple[i][1] / 100;
+                itemsAmount += _tokensTuple[i][1];
             }
             require(itemsAmount % winnersAmount == 0, "amount of items should be divided to winners amount without remainder");
         }

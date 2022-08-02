@@ -11,7 +11,6 @@
   import CircularProgress from '@smui/circular-progress';
   import { Content } from "@smui/card";
   import Tooltip, { Wrapper } from "@smui/tooltip";
-  import Fab from '@smui/fab';
   import { Icon } from '@smui/common';
 
   let loading = false;
@@ -34,8 +33,7 @@
 
   const createGiveaway = async () => {
     const signer: Signer = $auth.signer;
-    const selectedCards = $cards.filter((card) => card.selected).map((card) => [card.tokenId, card.selectedAmount * 100])
-    console.log(selectedCards)
+    const selectedCards = $cards.filter((card) => card.selected).map((card) => [card.tokenId, card.selectedAmount])
     const data = contractInterface.encodeFunctionData(
       'createGiveaway', [skyWeaverAddress, selectedCards, winnersAmount]
     )
@@ -94,7 +92,7 @@
           <div class="flex justify-center items-center">
             {#if notEvenlySplit}
               <Wrapper>
-                <Fab class="flex max-w-[35px] text-bright-purple"><Icon class="material-icons">info_outlined</Icon></Fab>
+                <Icon class="material-icons text-bright-purple cursor-help max-w-[35px]">info_outlined</Icon>
                 <Tooltip yPos="below" xPos="start">Amount of items should be evenly split between amount of winners. e.g. 4 items can't be split between 3 winners evenly.</Tooltip>
               </Wrapper>
             {/if}

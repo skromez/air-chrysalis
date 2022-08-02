@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import type { Giveaway } from '../types/giveaway';
 
-export const contractAddress = '0x2d3f33926F70C333648c3144c8e511C4A042fF37';
+export const contractAddress = '0x7a2E3894E22152fA8ac0e132933938Fbbf662740';
 export const skyWeaverAddress = '0x631998e91476da5b870d741192fc5cbc55f5a52e';
 export const contractAbi = [
   'function createGiveaway(address _contractAddr, uint256[2][] memory _tokensTuple, uint32 winnersAmount)',
