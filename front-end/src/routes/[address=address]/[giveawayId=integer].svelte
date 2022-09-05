@@ -22,7 +22,7 @@
 
   let address: string;
   let cards: SkyweaverCard[] = [];
-  let winners: {address: string, items: SkyweaverCard}[] = [];
+  let winners: {address: string, items: SkyweaverCard[]}[] = [];
   let loadingCards = true;
   let loadingVRFVerification = false;
   let giveawayId: number;
@@ -53,7 +53,7 @@
     for (const winner of winners) {
       const tokenIds = []
       const tokenAmounts = []
-      for (const token of winner.items as SkyweaverCard[]) {
+      for (const token of winner.items) {
         tokenIds.push(BigNumber.from(token.tokenId))
         tokenAmounts.push(BigNumber.from(token.amount * 100))
       }
