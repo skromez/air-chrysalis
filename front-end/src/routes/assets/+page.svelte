@@ -2,13 +2,13 @@
   import Tooltip, { Wrapper } from '@smui/tooltip';
   import Button from '@smui/button';
 
-  import { auth } from '../stores/auth';
-  import { cards } from '../stores/cards';
+  import { auth } from '../../stores/auth';
+  import { cards } from '../../stores/cards';
 
-  import { IndexerService } from '../services/indexer.service';
-  import { MetadataService } from '../services/metadata.service';
-  import Card from '../components/card.svelte';
-  import Container from '../components/container.svelte';
+  import { IndexerService } from '../../services/indexer.service';
+  import { MetadataService } from '../../services/metadata.service';
+  import Card from '../../components/card.svelte';
+  import Container from '../../components/container.svelte';
   import CircularProgress from '@smui/circular-progress';
   import { goto } from '$app/navigation';
   import { onDestroy } from 'svelte';

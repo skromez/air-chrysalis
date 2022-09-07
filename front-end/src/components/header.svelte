@@ -8,7 +8,7 @@
   import { contractAbi, contractAddress } from '../shared/contract';
   import { goto } from "$app/navigation";
   import logo from '../images/logo.png'
-  import { browser } from "$app/env";
+  import { browser } from "$app/environment";
   import IconButton from '@smui/icon-button';
 
   const connect = async () => {

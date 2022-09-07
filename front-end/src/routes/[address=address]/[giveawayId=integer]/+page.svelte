@@ -7,18 +7,18 @@
     defaultContract, fetchAccountGiveaways,
     isParticipatingInGiveaway,
     skyWeaverAddress
-  } from '../../shared/contract';
-  import type { Giveaway } from '../../types/giveaway';
-  import type { Card as SkyweaverCard } from "../../types/card";
-  import Container from '../../components/container.svelte';
-  import Winner from '../../components/winner.svelte';
+  } from '../../../shared/contract';
+  import type { Giveaway } from '../../../types/giveaway';
+  import type { Card as SkyweaverCard } from "../../../types/card";
+  import Container from '../../../components/container.svelte';
+  import Winner from '../../../components/winner.svelte';
   import Button from "@smui/button";
-  import { auth } from '../../stores/auth';
+  import { auth } from '../../../stores/auth';
   import Card, { Content } from "@smui/card";
-  import { MetadataService } from '../../services/metadata.service';
+  import { MetadataService } from '../../../services/metadata.service';
   import CircularProgress from "@smui/circular-progress";
   import {BigNumber, ethers} from 'ethers';
-  import { giveaways } from "../../stores/giveaways";
+  import { giveaways } from "../../../stores/giveaways";
 
   let address: string;
   let cards: SkyweaverCard[] = [];

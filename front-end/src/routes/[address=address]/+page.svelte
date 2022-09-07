@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
-  import {fetchAccountGiveaways} from '../shared/contract';
+  import {fetchAccountGiveaways} from '../../shared/contract';
   import { page } from '$app/stores';
-  import GiveawayCard from '../components/giveaway-card.svelte'
-  import Container from '../components/container.svelte'
+  import GiveawayCard from '../../components/giveaway-card.svelte'
+  import Container from '../../components/container.svelte'
   import CircularProgress from "@smui/circular-progress";
-  import { giveaways } from "../stores/giveaways";
+  import { giveaways } from "../../stores/giveaways";
 
   let address: string;
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { contractAddress } from "../shared/contract.ts";
+  import { contractAddress } from "../../shared/contract.ts";
 </script>
 <div class="mt-8 text-2xl text-center mx-36">
   Air Chrysalis is an <a target="_blank" href="https://github.com/skromez/air-chrysalis"> open-source</a>, unofficial giveaway tool for Skyweaver cards.

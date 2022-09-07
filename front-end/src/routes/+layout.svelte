@@ -1,11 +1,11 @@
 <script lang="ts">
-  import "../app.css"
   import Header from '../components/header.svelte'
-  import { browser } from "$app/env";
+  import { browser } from "$app/environment";
   import { onMount } from 'svelte';
   import { sequence } from '0xsequence';
   import { auth } from '../stores/auth';
   import heart from '../images/heart.png'
+  import "../app.css"
 
   $: onMount(async () => {
     const jwt = localStorage.getItem('jwt')

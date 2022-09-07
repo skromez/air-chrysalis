@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { cards } from '../stores/cards';
+  import { cards } from '../../stores/cards';
   import { Signer } from 'ethers';
-  import { auth } from '../stores/auth';
-  import { contractAddress, contractInterface, defaultContract, skyWeaverAddress } from '../shared/contract';
+  import { auth } from '../../stores/auth';
+  import { contractAddress, contractInterface, defaultContract, skyWeaverAddress } from '../../shared/contract';
   import { goto } from '$app/navigation';
-  import CreateCard from '../components/create-card.svelte'
+  import CreateCard from '../../components/create-card.svelte'
   import Button from '@smui/button';
   import { onMount } from 'svelte';
-  import Container from '../components/container.svelte';
+  import Container from '../../components/container.svelte';
   import CircularProgress from '@smui/circular-progress';
   import { Content } from "@smui/card";
   import Tooltip, { Wrapper } from "@smui/tooltip";
