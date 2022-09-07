@@ -6,7 +6,7 @@ const config = {
 	server: { https: true },
 	plugins: [sveltekit(), mkcert()],
 	ssr: {
-		noExternal: [/^@smui(?:-extra)?\//]
+		noExternal: ['devalue', /^@smui(?:-extra)?\//]
 	}
 };
 export default config;
