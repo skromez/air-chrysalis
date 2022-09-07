@@ -1,6 +1,3 @@
 [build]
   command = "yarn build"
   publish = "build"
-
-[functions]
-  node_bundler = "esbuild" # temporary workaround for https://github.com/sveltejs/kit/issues/6462
