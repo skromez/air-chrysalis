@@ -1,11 +1,12 @@
 {
 	"useTabs": true,
-	"singleQuote": true,
+	"singleQuote": false,
 	"trailingComma": "none",
+	"bracketSpacing": true,
 	"printWidth": 100,
-    "svelteSortOrder" : "options-styles-scripts-markup",
-    "svelteStrictMode": true,
-    "svelteBracketNewLine": false,
-    "svelteAllowShorthand": false,
-    "svelteIndentScriptAndStyle": false
+	"svelteSortOrder": "options-styles-scripts-markup",
+	"svelteStrictMode": true,
+	"svelteBracketNewLine": false,
+	"svelteAllowShorthand": false,
+	"svelteIndentScriptAndStyle": false
 }

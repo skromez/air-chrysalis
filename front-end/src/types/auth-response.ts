@@ -1,5 +1,5 @@
 export interface AuthResponse {
-  jwtToken: string;
-  status: boolean;
-  address: string;
+	jwtToken: string;
+	status: boolean;
+	address: string;
 }

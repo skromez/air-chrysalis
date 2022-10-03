@@ -1,30 +1,24 @@
-import axios from 'axios';
-import type { Card } from '../types/card';
-import { skyWeaverAddress } from '../shared/contract';
-import type { CardOwnership } from '../types/card-ownership';
+import type { Card } from "../types/card";
+import { skyWeaverAddress } from "../shared/contract";
 
 export class MetadataService {
-  private static readonly axiosInstance = axios.create({baseURL: 'https://metadata.sequence.app/rpc/Metadata'})
-
-  static async getMetadata(tokenIDs: string[]): Promise<Card[]> {
-    if (tokenIDs.length) {
-      const {data: {tokenMetadata}} = await this.axiosInstance.post('/GetTokenMetadata', {
-        chainID: '4',
-        contractAddress: skyWeaverAddress,
-        tokenIDs
-      })
-      return tokenMetadata
-    } else {
-      return [];
-    }
-  }
-
-
-  static async getCardOwnership(accountAddress: string): Promise<CardOwnership[]> {
-    const result = await axios.post('https://api.skyweaver.net/rpc/SkyWeaverAPI/GetCardOwnership', {
-      accountAddress,
-      contractQuery: false,
-    })
-    return result.data.res.cardBalances
-  }
+	static async getMetadata(tokenIDs: string[]): Promise<Card[]> {
+		if (tokenIDs.length) {
+			const res = await fetch("https://metadata.sequence.app/rpc/Metadata/GetTokenMetadata", {
+				method: "POST",
+				body: JSON.stringify({
+					chainID: "4",
+					contractAddress: skyWeaverAddress,
+					tokenIDs
+				}),
+				headers: {
+					"Content-Type": "application/json"
+				}
+			});
+			const { tokenMetadata } = await res.json();
+			return tokenMetadata;
+		} else {
+			return [];
+		}
+	}
 }

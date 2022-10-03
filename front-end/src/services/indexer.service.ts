@@ -1,16 +1,15 @@
-import axios from 'axios';
-import { skyWeaverAddress } from '../shared/contract';
+import { skyWeaverAddress } from "../shared/contract";
 
 export class IndexerService {
 	static async getTokenIDs(accountAddress: string): Promise<{ tokenId: string; amount: number }[]> {
-		const res = await fetch('https://polygon-indexer.sequence.app/rpc/Indexer/GetTokenBalances', {
-			method: 'POST',
+		const res = await fetch("https://polygon-indexer.sequence.app/rpc/Indexer/GetTokenBalances", {
+			method: "POST",
 			body: JSON.stringify({
 				accountAddress,
 				contractAddress: skyWeaverAddress
 			}),
 			headers: {
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			}
 		});
 		const { balances } = await res.json();

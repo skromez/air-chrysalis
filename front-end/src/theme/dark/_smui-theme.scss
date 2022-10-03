@@ -1,54 +1,54 @@
-@use 'sass:color';
-@use '@material/theme/color-palette';
+@use "sass:color";
+@use "@material/theme/color-palette";
 
 // Svelte Colors! (Dark Theme)
-@use '@material/theme/index' as theme with (
-  $primary: #AC8FFF,
-  $secondary: #40306B,
-  $surface: #231445,
-  $background: #0C061E,
-  $error: #dc3545,
+@use "@material/theme/index" as theme with (
+	$primary: #ac8fff,
+	$secondary: #40306b,
+	$surface: #231445,
+	$background: #0c061e,
+	$error: #dc3545
 );
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@500&display=swap");
 
 :root {
-  --button-radius: 15px
+	--button-radius: 15px;
 }
 
 * :not(.material-icons) {
-  font-family: 'Barlow', Roboto, sans-serif !important;
+	font-family: "Barlow", Roboto, sans-serif !important;
 }
 
 html,
 body {
-  background-color: #0C061E;
-  color: theme.$on-surface;
+	background-color: #0c061e;
+	color: theme.$on-surface;
 }
 
 #svelte {
-  position: relative;
+	position: relative;
 }
 
 button.button-shaped-round {
-  color: white !important;
-  border-radius: var(--button-radius) !important;
+	color: white !important;
+	border-radius: var(--button-radius) !important;
 }
 
 .mdc-button--outlined {
-  .mdc-button__ripple {
-    border-radius: var(--button-radius) !important;
-  }
+	.mdc-button__ripple {
+		border-radius: var(--button-radius) !important;
+	}
 }
 .mdc-button--raised {
-  .mdc-button__ripple {
-    border-radius: var(--button-radius) !important;
-  }
+	.mdc-button__ripple {
+		border-radius: var(--button-radius) !important;
+	}
 }
 
 a {
-  color: #ac8fff !important;
+	color: #ac8fff !important;
 }
 
 a:visited {
-  color: #ac8fff !important;
+	color: #ac8fff !important;
 }
