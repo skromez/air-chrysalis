@@ -38,16 +38,18 @@
 				.map((token) => ({
 					...token,
 					amount: amountTokenMap.get(token.tokenId),
-					selectedAmount: 1,
+					selectedAmount: 1
 				}));
 			cards.update((prev) => [...prev, ...fetchedCards]);
 		} else {
 			const metadata = await MetadataService.getMetadata(tokenIds.map((token) => token.tokenId));
-			const fetchedCards = metadata.map((token) => ({
-				...token,
-				amount: amountTokenMap.get(token.tokenId),
-				selectedAmount: 1
-			}));
+			const fetchedCards = metadata
+				.filter((token => token))
+				.map((token) => ({
+					...token,
+					amount: amountTokenMap.get(token.tokenId),
+					selectedAmount: 1
+				}));
 			cards.set(fetchedCards);
 		}
 		loading = false;

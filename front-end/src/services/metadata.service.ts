@@ -7,7 +7,7 @@ export class MetadataService {
 			const res = await fetch("https://metadata.sequence.app/rpc/Metadata/GetTokenMetadata", {
 				method: "POST",
 				body: JSON.stringify({
-					chainID: "4",
+					chainID: "137",
 					contractAddress: skyWeaverAddress,
 					tokenIDs
 				}),
