@@ -58,44 +58,45 @@
 <div class='px-4 pb-12 pt-2'>
 	{#if browser}
 		<slot />
-		<Dialog
-			bind:open
-		>
-			<Title>Choose amount in MATIC</Title>
-			<Content>
-				<div>
-					<FormField style='display: flex; flex-direction: column-reverse;'>
-						<Slider
-							step={0.5}
-							max={10}
-							min={0.5}
-							bind:value={donationAmount}
-							style='width: 100%;'
-						/>
-						<span>{donationAmount}</span>
-					</FormField>
-				</div>
-				<div class='flex flex-col items-center'>
+	{/if}
+</div>
+<Dialog
+	class='z-50'
+	bind:open
+>
+	<Title>Choose amount in MATIC</Title>
+	<Content>
+		<div>
+			<FormField style='display: flex; flex-direction: column-reverse;'>
+				<Slider
+					step={0.5}
+					max={10}
+					min={0.5}
+					bind:value={donationAmount}
+					style='width: 100%;'
+				/>
+				<span>{donationAmount}</span>
+			</FormField>
+		</div>
+		<div class='flex flex-col items-center'>
 					<span>
 						Or you can donate manually using this address
 					</span>
-					<div class='flex items-center'>
-						<a href=''>{donationAddress}</a>
-						<IconButton on:click={copyAddress} ripple='{false}' class='material-icons'>content_copy</IconButton>
-					</div>
-				</div>
-			</Content>
-			<Actions>
-				<Button on:click={() => (open = false)}>
-					<Label>Cancel</Label>
-				</Button>
-				<Button on:click={donate}>
-					<Label>Donate</Label>
-				</Button>
-			</Actions>
-		</Dialog>
-	{/if}
-</div>
+			<div class='flex items-center'>
+				<a href=''>{donationAddress}</a>
+				<IconButton on:click={copyAddress} ripple='{false}' class='material-icons'>content_copy</IconButton>
+			</div>
+		</div>
+	</Content>
+	<Actions>
+		<Button on:click={() => (open = false)}>
+			<Label>Cancel</Label>
+		</Button>
+		<Button on:click={donate}>
+			<Label>Donate</Label>
+		</Button>
+	</Actions>
+</Dialog>
 <div>
 	<div class='absolute bottom-6 left-2 text-xs text-des-purple'>
 		Please consider <a href='' on:click={() => (open = true)}>donating</a> if you like the dApp!
