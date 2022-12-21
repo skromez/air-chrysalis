@@ -28,19 +28,21 @@
 >
 	<img
 		on:click='{markSelected}'
-		class='hover:cursor-pointer relative z-5'
+		class='hover:cursor-pointer relative z-20'
 		src='{card.image}'
 		alt='Skyweaver Card'
 	/>
-	<div class='flex justify-center items-center z-5 amount'>
+	<div class='flex justify-center items-center amount z-20'>
 		{#if card.properties.type === "Silver" || card.properties.type === "Gold"}
 			<img
 				style='width: 20px; height: 20px'
+				class='z-20'
 				src="{card.properties.type === 'Gold' ? goldUrl : silverUrl}"
 				alt='Amount Icon'
 			/>
 		{:else}
 			<img
+				class='z-20'
 				style='width: 20px; height: 20px'
 				src='https://www.skyweaver.net/images/mediakit/logo-white-symbol.png'
 				alt='Amount Icon'
@@ -53,7 +55,7 @@
 	</div>
 	{#if card.selected}
 		<img
-			class='h-[225px] left-[14px] top-[19px] z-0 absolute'
+			class='h-[225px] left-[14px] top-[19px] z-10 absolute'
 			src='https://assets.skyweaver.net/fn_QTMPm/webapp/cards/full-cards/frame-highlight.png'
 			alt=''
 		/>

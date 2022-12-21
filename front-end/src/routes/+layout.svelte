@@ -59,6 +59,7 @@
 	{#if browser}
 		<slot />
 		<Dialog
+			class='z-50'
 			bind:open
 		>
 			<Title>Choose amount in MATIC</Title>
